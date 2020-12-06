@@ -11,7 +11,7 @@ module Slugifiable
 
     module InstanceMethods
         def slug
-            string = self.name || self.title
+            string = self == 'Wizard' ? self.username : self.name
             string.downcase.gsub(/\W/," ").gsub(/\s+/," ").gsub(" ","-")
         end
     end

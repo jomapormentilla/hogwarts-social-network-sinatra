@@ -56,9 +56,23 @@ class ApplicationController < Sinatra::Base
         end
 
         wizard_new = Wizard.create(params[:wizard])
+        
+        wizard_new.name = "#{ params[:fname] } #{ params[:lname] }"
+        wizard_new.house = House.all.sample
+        wizard_new.save
 
         flash[:message] = "Congratulations, #{ wizard_new.username.upcase } - You're a wizard!"
         flash[:alert_type] = "success"
+        redirect '/'
+    end
+
+    get '/logout' do
+        redirect_if_logged_in
+        redirect '/'
+    end
+
+    post '/logout' do
+        session.clear
         redirect '/'
     end
 
@@ -69,6 +83,10 @@ class ApplicationController < Sinatra::Base
         
         def logged_in?
             !!session[:wizard_id]
+        end
+
+        def is_current_session?( obj )
+            obj.id == current_wizard.id
         end
     end
 

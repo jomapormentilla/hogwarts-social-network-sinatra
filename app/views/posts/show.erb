@@ -13,6 +13,7 @@
         </form>
 
         <hr />
+        <h4><%= @post.comments.size %> Comment<%= 's' if @post.comments.size != 1 %></h4>
         <% @post.comments.each do |comment| %>
             <div class="card">
                 <div class="card-body">

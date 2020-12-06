@@ -9,12 +9,34 @@
         <link rel="stylesheet" href="/stylesheets/mystyles.css">
     </head>
     
-    <body <%= 'id="body-login"' if session[:wizard_id] == nil %>>
+    <body <%= 'id="body-login"' if !logged_in? %>>
         <div class="container-fluid">
             <div class="row">
-                <div id="main-header" class="col-md-12 text-right px-4 py-2">
-                    <h3>Hogwarts Social Network Sinatra</h3>
-                </div>
+                <% if !logged_in? %>
+                    <div id="main-header" class="col-md-12 text-right px-4 py-2">
+                        <h3>Hogwarts Social Network Sinatra</h3>
+                    </div>
+                <% else %>
+                    <div class="col-md-12 px-0">
+                        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                            <img src="/images/hogwarts-logo-300x300.png" alt="Logo" class="float-left py-1" style="width: 50px;"/>
+                            <a class="navbar-brand" href="/wizards/<%= current_wizard.slug %>"><%= current_wizard.username.upcase %></a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav text-right">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/houses">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/spells">Spell Shop</a>
+                                </li>
+                            </ul>
+                            </div>
+                        </nav>
+                    </div>
+                <% end %>
                 <div id="main-content" class="py-2 col-md-12">
                     <%= yield %>
                 </div>

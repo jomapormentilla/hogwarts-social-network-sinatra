@@ -1,11 +1,36 @@
-<h1>Welcome to Hogwarts</h1>
+<div class="row">
+    <div class="col-md-5">
+        <h1>Welcome to Hogwarts</h1>
 
-<% @houses.each do |house| %>
-    <h3><a href="/houses/<%= house.slug %>"><%= house.name %></a></h3>
-    <p>Wizards: 
-        <% house.wizards.each do |wizard| %>
-            <li><a href="/wizards/<%= wizard.slug %>"><%= wizard.name %></a></li>
+        <% @houses.each do |house| %>
+            <div class="card">
+                <div class="card-body">
+                    <h2><a href="/houses/<%= house.slug %>"><%= house.name %></a></h2>
+                    <p>Founder: <%= house.founder %></p>
+                    <p>Head Master: <%= house.head_master %></p>
+                    <p>House <%= house.name %> currently has <%= house.wizards.size %> wizards.</p>
+                </div>
+            </div>
+            <br />
         <% end %>
-    </p>
-    <p>Posts: <%= house.posts.size %></p>
-<% end %>
+    </div>
+
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-header">Recent Posts</div>
+            <div class="card-body">
+                <% @houses.each do |house| %>
+                    <div class="card">
+                        <div class="card-body">
+                            <% post = house.posts.sample %>
+                            <h4 class="card-title"><%= post.title %></h4>
+                            <p>By: <a href="/wizards/<%= post.wizard.slug %>"><%= post.wizard.username %></a></p>
+                            <p class="card-text"><%= post.content %></p>
+                            <p><%= post.upvotes.size %> Upvote<%= 's' if post.upvotes.size != 1 %> | <a href="/posts/<%= post.id %>"><%= post.comments.size %> Comment<%= 's' if post.comments.size != 1 %></a></p>
+                        </div>
+                    </div><br />
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>
