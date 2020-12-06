@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_06_021714) do
+ActiveRecord::Schema.define(version: 2020_12_06_045937) do
 
   create_table "comments", force: :cascade do |t|
     t.string "content"
@@ -50,6 +50,11 @@ ActiveRecord::Schema.define(version: 2020_12_06_021714) do
     t.integer "wizard_id"
   end
 
+  create_table "wizard_friends", force: :cascade do |t|
+    t.integer "friend_id"
+    t.integer "added_friend_id"
+  end
+
   create_table "wizard_spells", force: :cascade do |t|
     t.integer "wizard_id"
     t.integer "spell_id"
@@ -60,7 +65,6 @@ ActiveRecord::Schema.define(version: 2020_12_06_021714) do
     t.string "name"
     t.integer "balance"
     t.integer "house_id"
-    t.integer "friend_id"
   end
 
 end
