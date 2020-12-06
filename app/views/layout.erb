@@ -9,9 +9,12 @@
         <link rel="stylesheet" href="/stylesheets/mystyles.css">
     </head>
     
-    <body>
+    <body <%= 'id="body-login"' if session[:wizard_id] == nil %>>
         <div class="container-fluid">
             <div class="row">
+                <div id="main-header" class="col-md-12 text-right px-4 py-2">
+                    <h3>Hogwarts Social Network Sinatra</h3>
+                </div>
                 <div id="main-content" class="py-2 col-md-12">
                     <%= yield %>
                 </div>

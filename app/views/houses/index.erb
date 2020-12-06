@@ -1,0 +1,11 @@
+<h1>Welcome to Hogwarts</h1>
+
+<% @houses.each do |house| %>
+    <h3><a href="/houses/<%= house.slug %>"><%= house.name %></a></h3>
+    <p>Wizards: 
+        <% house.wizards.each do |wizard| %>
+            <li><a href="/wizards/<%= wizard.slug %>"><%= wizard.name %></a></li>
+        <% end %>
+    </p>
+    <p>Posts: <%= house.posts.size %></p>
+<% end %>

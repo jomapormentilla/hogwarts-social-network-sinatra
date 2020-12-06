@@ -1,0 +1,26 @@
+<div class="card">
+    <div class="card-header"><h4><%= @post.title %></h4></div>
+    <div class="card-body">
+        <h6 class="card-subtitle">By: <a href="/wizards/<%= @post.wizard.slug %>"><%= @post.wizard.username %></a></h6>
+        <br />
+        <p class="card-text"><%= @post.content %></p>
+        
+        <h4><%= @post.upvotes.size %> Upvotes</h4>
+
+        <form action="" method="POST">
+            <textarea name="" placeholder="Comment Here..." class="form-control" /></textarea><br />
+            <button type="submit" name="" class="btn btn-primary" />Add Comment</button>
+        </form>
+
+        <hr />
+        <% @post.comments.each do |comment| %>
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-title"><a href="/wizards/<%= comment.wizard.slug %>"><%= comment.wizard.username %></a> said:</p>
+                    <p>"<%= comment.content %>"</p>
+                </div>
+            </div>
+            <br />
+        <% end %>
+    </div>
+</div>

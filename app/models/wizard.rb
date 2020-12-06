@@ -14,4 +14,9 @@ class Wizard < ActiveRecord::Base
     has_many :posts
     has_many :comments
     has_many :upvotes
+
+    has_secure_password
+
+    extend Slugifiable::ClassMethods
+    include Slugifiable::InstanceMethods
 end

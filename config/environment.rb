@@ -8,5 +8,5 @@ ActiveRecord::Base.establish_connection(
   :database => "db/#{ENV['SINATRA_ENV']}.db"
 )
 
-require_all 'app'
 require 'open-uri'
+require_all 'app'
