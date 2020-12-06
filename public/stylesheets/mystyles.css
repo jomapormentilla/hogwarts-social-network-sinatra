@@ -1,0 +1,30 @@
+html, body {
+
+}
+
+img {
+    max-width: 100%;
+    height:auto;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Open Sans Condensed', sans-serif;
+}
+
+#main-header {
+    background-color: #333;
+    color: #f3cb3b;
+}
+
+#main-footer {
+    background-color: #333;
+    color: #fff;
+    font-size: 10px;
+}
+
+.edit-model-form > tr td[first-child] {
+    width: 1%;
+    white-space: nowrap;
+    text-align: right;
+    font-weight: 900;
+}
