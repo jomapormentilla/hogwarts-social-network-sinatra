@@ -20,6 +20,11 @@ class WizardsController < ApplicationController
 
         flash[:message] = "You are now friends with #{ wizard.name }!"
         flash[:alert_type] = "success"
-        redirect "/wizards/#{ current_wizard.slug }"
+        redirect "/wizards/#{ wizard.slug }"
+    end
+
+    get '/wizards/:slug/edit' do
+        @wizard = Wizard.find_by_slug(params[:slug])
+        erb :'/wizards/edit'
     end
 end

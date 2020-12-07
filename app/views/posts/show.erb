@@ -52,7 +52,7 @@
                 <% if !current_wizard.friends.include?(@post.wizard) %>
                     <form action="/wizards/<%= @post.wizard.slug %>/add_friend" method="POST">
                         <input type="hidden" name="friend_id" value="<%= @post.wizard.slug %>" />
-                        <button type="submit" class="btn btn-primary btn-sm">Add as Friend</button>
+                        <button type="submit" class="btn btn-block btn-outline-primary btn-sm">Add as Friend</button>
                     </form>
                 <% end %>
             </div>

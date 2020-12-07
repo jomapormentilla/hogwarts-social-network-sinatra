@@ -14,7 +14,7 @@
             <div class="row">
                 <% if !logged_in? %>
                     <div id="main-header" class="col-md-12 text-right px-4 py-2">
-                        <h3>Hogwarts Social Network Sinatra</h3>
+                        <h3>Hogwarts Social Network ~ Sinatra Edition</h3>
                     </div>
                 <% else %>
                     <div class="col-md-12 px-0">
@@ -47,6 +47,7 @@
                 <% end %>
                 <div id="main-content" class="py-2 col-md-12">
                     <%= yield %>
+                    <hr /><br />
                 </div>
                 <div id="main-footer" class="col-md-12 text-center fixed-bottom py-2">
                     &copy; 2020 JOMATRIX Technologies - All rights reserved.

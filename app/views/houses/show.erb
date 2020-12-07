@@ -2,8 +2,8 @@
 
 <div class="row">
     <div class="col-md-9">
-        <div class="card">
-            <div class="card-header"><h4>Recent Posts</h4></div>
+        <div class="card bg-light shadow">
+            <div class="card-header"><h4>Recent Posts in House <%= @house.name %></h4></div>
             <div class="card-body">
                 <% @house.posts.each do |post| %>
                     <div class="card">
@@ -23,7 +23,7 @@
     
     <div class="col-md-3">
         <div class="card">
-            <h4 class="card-header"><%= @house.name %> Wizards</h4>
+            <h4 class="card-header"><%= @house.name %> Wizards (<%= @house.wizards.size %>)</h4>
             <div class="card-body">
                 <ul>
                     <% @house.wizards.each do |wizard| %>

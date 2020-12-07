@@ -15,12 +15,32 @@
             <div class="card-header"><h3><%= @wizard.name %></h3></div>
             <img src="/images/hogwarts-logo-v2.png" alt="profile" class="card-img-top" />
             <div class="card-body">
-                Hello
+                <p>House: <%= @wizard.house.name %></p>
+                <p>Wand: <%= @wizard.wand != nil ? @wizard.wand.name : 'Does not own a wand' %></p>
+                <hr />
+                <% if is_current_session? @wizard %>
+                    <a href="/wizards/<%= @wizard.slug %>" class="btn btn-block btn-outline-secondary">Edit</a>
+                <% end %>
             </div>
         </div>
     </div>
 
     <div class="col-md-6">
+        <% if is_current_session? @wizard %>
+            <div class="card shadow">
+                <div class="card-header"><h3>Create a New Post</h3></div>
+                <div class="card-body">
+                    <form action="/posts/<%= @wizard.slug %>/new" method="POST">
+                        <input type="text" name="post[title]" placeholder="Post Title..." class="form-control" /><br />
+                        <textarea name="post[content]" placeholder="Post Content..." class="form-control"></textarea><br />
+                        <button class="btn btn-block btn-outline-secondary">Create Post</button>
+                    </form>
+                </div>
+            </div><br />
+        <% end %>
+            
+        </form>
+
         <% if @wizard.posts.empty? %>
             <div class="alert alert-secondary text-center shadow"><%= @wizard.username.upcase %> does not have any posts.</div>
         <% else %>
@@ -64,9 +84,17 @@
                 <% if !current_wizard.friends.include?(@wizard) && !is_current_session?(@wizard) %>
                     <form action="/wizards/<%= @wizard.slug %>/add_friend" method="POST">
                         <input type="hidden" name="friend_id" value="<%= @wizard.slug %>" />
-                        <button type="submit" class="btn btn-primary btn-sm">Add as Friend</button>
+                        <button type="submit" class="btn btn-block btn-outline-primary btn-sm">Add as Friend</button>
                     </form><br />
                 <% end %>
+
+                <% if current_wizard.friends.include?(@wizard) && !is_current_session?(@wizard) %>
+                    <form action="/wizards/<%= @wizard.slug %>/remove_friend" method="POST">
+                        <input type="hidden" name="friend_id" value="<%= @wizard.slug %>" />
+                        <button type="submit" class="btn btn-block btn-outline-danger btn-sm">Unfriend</button>
+                    </form><br />
+                <% end %>
+
                 <% @all_friends.each do |friend| %>
                     <p><a href="/wizards/<%= friend.slug %>"><%= friend.name %></a></p>
                 <% end %>

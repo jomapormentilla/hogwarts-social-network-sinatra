@@ -1,5 +1,5 @@
 html {
-    background-color: #111;
+    background-color: #000;
 }
 
 body {
@@ -26,7 +26,7 @@ h1, h2, h3, h4, h5 {
 }
 
 #main-footer {
-    background-color: #111;
+    background-color: #000;
     color: #fff;
     font-size: 10px;
 }
