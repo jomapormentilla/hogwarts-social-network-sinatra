@@ -1,9 +1,17 @@
-<h1>Welcome to Hogwarts</h1>
-
 <div class="row">
+    <div class="col-md-12">
+        <div class="alert alert-dark text-center">
+            <h2>Welcome to Hogwarts</h2>
+            <span>School of Witchcraft & Wizardry</span>
+        </div>
+    </div>
+
     <div class="col-md-3">
         <div class="card">
-            <div class="card-header"><h3><%= current_wizard.username.upcase %></h3></div>
+            <div class="card-header text-center">
+                <h3>Welcome to Hogwarts</h3>
+                <span>School of Witchcraft & Wizardry</span>
+            </div>
             <img src="/images/hogwarts-logo-v2.png" alt="profile" class="card-img-top" />
             <hr />
             <div class="card-body">
@@ -16,10 +24,9 @@
         <div class="card bg-light shadow">
             <div class="card-header"><h3>Recent Posts</h3></div>
             <div class="card-body">
-                <% @houses.each do |house| %>
+                <% @posts.order(:id).reverse[0..9].each do |post| %>
                     <div class="card">
                         <div class="card-body">
-                            <% post = house.posts.sample %>
                             <h4 class="card-title"><%= post.title %></h4>
                             <p>By: <a href="/wizards/<%= post.wizard.slug %>"><%= post.wizard.username %></a><br />
                                 <span style="color: #777;"><%= parse_timestamp post.timestamp %></span></p>

@@ -19,6 +19,7 @@ def wizard_data
             username: username.gsub(" ","_"),
             name: name,
             email: "#{ username.gsub(" ",".") }@flatiron-school.com",
+            password: "password123",
             balance: 1000,
             house_id: House.all.sample.id
         }

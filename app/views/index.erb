@@ -1,13 +1,14 @@
 <div class="row">
     <div class="col-md-8"></div>
-    <div class="col-md-4 p-sm-2 p-md-4 text-center">
+    <div class="col-md-4 px-sm-2 px-md-4 text-center">
+        <img src="/images/hogwarts-logo-300x300.png" alt="hogwarts-logo" />
         <% if flash.has?(:message) %>
             <div class="alert alert-<%= flash[:alert_type] %> text-center"><%= flash[:message] %></div>
         <% end %>
-        <form action="/" method="POST">
+        <form action="/" method="POST" class="py-2">
             <input type="text" name="username" placeholder="Username" class="form-control" /><br />
             <input type="password" name="password" placeholder="Password" class="form-control" /><br />
-            <button type="submit" class="btn btn-outline-secondary btn-block">Login</button>
+            <button type="submit" class="btn btn-info btn-block">Login</button>
         </form>
         <br />
         <p style="color: #fff;">Need an account? <a href="/signup">Signup Here</a></p>

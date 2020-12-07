@@ -23,8 +23,19 @@ class WizardsController < ApplicationController
         redirect "/wizards/#{ wizard.slug }"
     end
 
+    post '/wizards/:slug/remove_friend' do
+        wizard = Wizard.find_by_slug(params[:slug])
+        current_wizard.friends.delete(wizard.id)
+
+        flash[:message] = "You are no longer friends with #{ wizard.name }!"
+        flash[:alert_type] = "danger"
+        redirect "/wizards/#{ wizard.slug }"
+    end
+
     get '/wizards/:slug/edit' do
         @wizard = Wizard.find_by_slug(params[:slug])
+        redirect_if_not_current_wizard?( @wizard )
+
         erb :'/wizards/edit'
     end
 end

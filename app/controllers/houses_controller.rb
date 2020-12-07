@@ -1,6 +1,7 @@
 class HousesController < ApplicationController
     get '/houses' do
         @houses = House.all
+        @posts = Post.all
         erb :'houses/index'
     end
 

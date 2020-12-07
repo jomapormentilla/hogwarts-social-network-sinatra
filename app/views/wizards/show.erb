@@ -1,15 +1,15 @@
-<% if is_current_session? @wizard %>
-    <form action="/logout" method="POST">
-        <button type="submit" class="btn btn-outline-danger btn-sm float-right">Logout</button>
-    </form>
-<% end %>
 
-<% if flash.has?(:message) %>
-    <div class="alert alert-<%= flash[:alert_type]%> text-center"><%= flash[:message] %></div>
-<% end %>
+<div class="row py-2">
+    <div class="col-md-12">
+        <div class="alert alert-dark text-center"><h1><%= @wizard.username.upcase %></h1></div>
+    </div>
+    <% if flash.has?(:message) %>
+        <div class="col-md-12">
+            <div class="alert alert-<%= flash[:alert_type]%> text-center"><%= flash[:message] %></div>
+        </div>
+    <% end %>
 
-<div class="row">
-    <div class="col-md-3">
+    <div class="col-sm-6 col-md-3">
         <div class="card">
             <div class="card-header"><h3><%= @wizard.name %></h3></div>
             <img src="/images/hogwarts-logo-v2.png" alt="profile" class="card-img-top" />
@@ -19,13 +19,17 @@
                 
                 <% if is_current_session? @wizard %>
                     <hr />
-                    <a href="/wizards/<%= @wizard.slug %>" class="btn btn-block btn-outline-secondary">Edit</a>
+                    <a href="/wizards/<%= @wizard.slug %>/edit" class="btn btn-block btn-outline-secondary btn-sm">Edit</a>
+                    <br />
+                    <form action="/logout" method="POST">
+                        <button type="submit" class="btn btn-block btn-outline-danger btn-sm float-right">Logout</button>
+                    </form>
                 <% end %>
             </div>
-        </div>
+        </div><br />
     </div>
 
-    <div class="col-md-6">
+    <div class="col-sm-6">
         <% if is_current_session? @wizard %>
             <div class="card shadow">
                 <div class="card-header"><h3>Create a New Post</h3></div>
@@ -42,7 +46,7 @@
         </form>
 
         <% if @wizard.posts.empty? %>
-            <div class="alert alert-secondary text-center"><%= @wizard.username.upcase %> does not have any posts.</div>
+            <div class="alert alert-info text-center"><%= @wizard.username.upcase %> does not have any posts.</div>
         <% else %>
             <% @wizard.posts.each do |post| %>
                 <div class="card">
