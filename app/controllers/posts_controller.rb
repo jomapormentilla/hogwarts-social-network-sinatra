@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
     get '/posts' do
-
+        
     end
 
     get '/posts/:id' do
@@ -10,12 +10,7 @@ class PostsController < ApplicationController
 
     post '/posts/:slug/new' do
         wizard = Wizard.find_by_slug(params[:slug])
-
-        if current_wizard.slug != wizard.slug
-            flash[:message] = "Invalid User Error"
-            flash[:alert_type] = "danger"
-            redirect "/wizards/#{ current_wizard.slug }"
-        end
+        redirect_if_not_current_wizard?( wizard )
 
         if params[:post].values.include?("")
             flash[:message] = "All fields are required"
@@ -31,5 +26,43 @@ class PostsController < ApplicationController
         flash[:message] = "Your post has been published!"
         flash[:alert_type] = "success"
         redirect "/posts/#{ post.id }"
+    end
+
+    post '/posts/:id/upvote' do
+        wizard = Wizard.find_by_id(params[:id])
+        redirect_if_not_current_wizard?( wizard )
+
+        upvote = Upvote.create(wizard_id: wizard.id, post_id: params[:post][:id])
+        redirect "/posts/#{ params[:post][:id] }"
+    end
+
+    get '/posts/:id/edit' do
+        @post = Post.find_by_id(params[:id])
+        wizard = Wizard.find_by_slug(@post.wizard.slug)
+        redirect_if_not_current_wizard?( wizard )
+
+        erb :'/posts/edit'
+    end
+
+    patch '/posts/:id' do
+        post = Post.find_by_id(params[:id])
+        
+        if params[:post].values.include?("")
+            redirect "/posts/#{ params[:id] }"
+        end
+
+        post.update(params[:post])
+
+        redirect "/posts/#{ params[:id] }"
+    end
+
+    helpers do
+        def redirect_if_not_current_wizard?( wizard )
+            if current_wizard.slug != wizard.slug
+                flash[:message] = "Invalid User Error"
+                flash[:alert_type] = "danger"
+                redirect "/wizards/#{ current_wizard.slug }"
+            end
+        end
     end
 end

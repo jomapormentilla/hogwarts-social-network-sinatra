@@ -93,6 +93,10 @@ class ApplicationController < Sinatra::Base
         def is_current_session?( obj )
             obj.id == current_wizard.id
         end
+
+        def parse_timestamp( time )
+            time.strftime("%l:%M%P - %B %d, %Y")
+        end
     end
 
     private

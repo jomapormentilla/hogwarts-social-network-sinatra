@@ -5,11 +5,12 @@
         <div class="card bg-light shadow">
             <div class="card-header"><h4>Recent Posts in House <%= @house.name %></h4></div>
             <div class="card-body">
-                <% @house.posts.each do |post| %>
+                <% @house.posts.order(:timestamp).reverse.each do |post| %>
                     <div class="card">
                         <div class="card-body">
                             <h3 class="card-title"><%= post.title %></h3>
-                            <h6 class="card-subtitle"> By: <a href="/wizards/<%= post.wizard.slug %>"><%= post.wizard.username %></a></h6>
+                            <p class="card-subtitle">By: <a href="/wizards/<%= post.wizard.slug %>"><%= post.wizard.username %></a><br />
+                                <span style="color: #777;"><%= parse_timestamp post.timestamp %></span></p>
                             <br />
                             <p class="card-text"><%= post.content %></p>
                             <p><%= post.upvotes.size %> Upvote<%= 's' if post.upvotes.size != 1 %> | <a href="/posts/<%= post.id %>"><%= post.comments.size %> Comment<%= 's' if post.comments.size != 1 %></a></p>

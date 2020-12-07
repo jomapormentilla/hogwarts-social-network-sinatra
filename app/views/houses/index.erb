@@ -21,15 +21,20 @@
                         <div class="card-body">
                             <% post = house.posts.sample %>
                             <h4 class="card-title"><%= post.title %></h4>
-                            <p>By: <a href="/wizards/<%= post.wizard.slug %>"><%= post.wizard.username %></a></p>
+                            <p>By: <a href="/wizards/<%= post.wizard.slug %>"><%= post.wizard.username %></a><br />
+                                <span style="color: #777;"><%= parse_timestamp post.timestamp %></span></p>
                             <p class="card-text"><%= post.content %></p>
                             <hr />
-                            <%= post.upvotes.size %> Upvote<%= 's' if post.upvotes.size != 1 %> | <a href="/posts/<%= post.id %>"><%= post.comments.size %> Comment<%= 's' if post.comments.size != 1 %></a>
+                            <form action="/posts/<%= current_wizard.id %>/upvote" method="POST">
+                                <input type="hidden" name="post[id]" value="<%= post.id %>" />
+                                <button type="submit" class="btn btn-outline-info btn-sm" <%= 'disabled' if post.upvotes.any?{|up| up.wizard == current_wizard} %>><%= post.upvotes.size %> Upvote<%= 's' if post.upvotes.size != 1 %></button> &nbsp; 
+                                <a href="/posts/<%= post.id %>" class="btn btn-outline-primary btn-sm"><%= post.comments.size %> Comment<%= 's' if post.comments.size != 1 %></a>
+                            </form>
                         </div>
                     </div><br />
                 <% end %>
             </div>
-        </div>
+        </div><br />
     </div>
 
     <div class="col-md-3">
@@ -41,8 +46,7 @@
                     <p>Head Master: <%= house.head_master %></p>
                     <p>House <%= house.name %> currently has <%= house.wizards.size %> wizards.</p>
                 </div>
-            </div>
-            <br />
+            </div><br />
         <% end %>
     </div>
 </div>

@@ -1,6 +1,6 @@
 class WizardsController < ApplicationController
     get '/wizards' do
-        @wizards = Wizard.all
+        @wizards = Wizard.all.order(:name)
         erb :'wizards/index'
     end
 
