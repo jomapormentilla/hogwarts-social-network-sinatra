@@ -12,7 +12,7 @@
     <div class="col-sm-6 col-md-3">
         <div class="card">
             <div class="card-header"><h3><%= @wizard.name %></h3></div>
-            <img src="/images/hogwarts-logo-v2.png" alt="profile" class="card-img-top" />
+            <img src="<%= @wizard.img_url %>" alt="profile" class="card-img-top p-2" />
             <div class="card-body">
                 <p>House: <%= @wizard.house.name %></p>
                 <p>Wand: <%= @wizard.wand != nil ? @wizard.wand.name : 'Does not own a wand' %></p>

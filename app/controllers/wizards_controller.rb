@@ -38,4 +38,14 @@ class WizardsController < ApplicationController
 
         erb :'/wizards/edit'
     end
+
+    private
+
+    def is_founder?( wizard )
+        wizard.house.founder == wizard
+    end
+
+    def is_head_master?( wizard )
+        wizard.house.head_master == wizard
+    end
 end

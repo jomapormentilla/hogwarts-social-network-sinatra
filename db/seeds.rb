@@ -8,9 +8,14 @@ def self.start
     post_data
     comment_data
     upvote_data
+    wizard_image_data
+    wand_image_data
 end
 
 def wizard_data
+    founder_data
+    head_master_data
+
     50.times do
         name = Faker::Movies::HarryPotter.unique.character
         username = name.downcase
@@ -18,21 +23,101 @@ def wizard_data
         data = {
             username: username.gsub(" ","_"),
             name: name,
-            email: "#{ username.gsub(" ",".") }@flatiron-school.com",
-            password: "password123",
+            email: "#{ username.gsub(" ",".") }@hogwarts.edu",
+            password: "password",
             balance: 1000,
             house_id: House.all.sample.id
         }
 
-        Wizard.create(data)
+        search = Wizard.find_by_name(name)
+
+        if !search
+            wizard = Wizard.create(data)
+        end
     end
 
     assign_friends
+    assign_house_faculty
+end
+
+def founder_data
+    founders = [
+        {
+            username: "thelionking",
+            name: "Godric Gryffindor",
+            email: "g.gryffindor@hogwarts.edu",
+            password: "password",
+            balance: 1000
+        },
+        {
+            username: "thesnakelord",
+            name: "Salazar Slytherin",
+            email: "s.slytherin@hogwarts.edu",
+            password: "password",
+            balance: 1000
+        },
+        {
+            username: "powerpuffgirl",
+            name: "Helga Hufflepuff",
+            email: "h.hufflepuff@hogwarts.edu",
+            password: "password",
+            balance: 1000
+        },
+        {
+            username: "thebirdlady",
+            name: "Rowena Ravenclaw",
+            email: "r.ravenclaw@hogwarts.edu",
+            password: "password",
+            balance: 1000
+        }
+    ]
+
+    founders.each do |wizard|
+        Wizard.create(wizard)
+    end
+end
+
+def head_master_data
+    head_masters = [
+        {
+            username: "missmcgonagall",
+            name: "Minerva McGonagall",
+            email: "m.mcgonagall@hogwarts.edu",
+            password: "password",
+            balance: 1000
+        },
+        {
+            username: "thebadguy",
+            name: "Salazar Snape",
+            email: "s.snape@hogwarts.edu",
+            password: "password",
+            balance: 1000
+        },
+        {
+            username: "misspomona",
+            name: "Pomona Sprout",
+            email: "p.sprout@hogwarts.edu",
+            password: "password",
+            balance: 1000
+        },
+        {
+            username: "thebirdman",
+            name: "Filius Flitwick",
+            email: "f.flitwick@hogwarts.edu",
+            password: "password",
+            balance: 1000
+        }
+    ]
+    
+    head_masters.each do |wizard|
+        Wizard.create(wizard)
+    end
 end
 
 def assign_friends
     Wizard.all.each do |wizard|
         wizard.friends << Wizard.all.sample
+        wizard.save
     end
 end
 
@@ -59,18 +144,43 @@ def house_data
     html.css(".infoboxtable tbody").each do |tbody|
         h = House.new
         h.name = tbody.css("td")[2].css("p").text.split[1]
-        h.founder = tbody.css("td")[2].css("p").text
-        h.head_master = tbody.css("td")[10].css("p").text
         h.mascot = tbody.css("td")[6].css("p").text
         h.save
     end
 end
 
+def assign_house_faculty
+    House.all.each do |house|
+        if house.name == "Gryffindor"
+            wizard1 = Wizard.find_by_name("Godric Gryffindor")
+            wizard2 = Wizard.find_by_name("Minerva McGonagall")
+        elsif house.name == "Slytherin"
+            wizard1 = Wizard.find_by_name("Salazar Slytherin")
+            wizard2 = Wizard.find_by_name("Severus Snape")
+        elsif house.name == "Hufflepuff"
+            wizard1 = Wizard.find_by_name("Helga Hufflepuff")
+            wizard2 = Wizard.find_by_name("Pomona Sprout")
+        elsif house.name == "Ravenclaw"
+            wizard1 = Wizard.find_by_name("Rowena Ravenclaw")
+            wizard2 = Wizard.find_by_name("Filius Flitwick")
+        end
+
+        wizard1.house_id = house.id
+        wizard2.house_id = house.id
+        
+        house.founder = wizard1
+        house.head_master = wizard2
+        
+        house.save
+    end
+end
+
 def wand_data
-    100.times do
+    60.times do
         data = {
             name: "The #{ Faker::Verb.ing_form.capitalize } #{ Faker::Creature::Animal.name.capitalize }",
-            price: rand(50...250)
+            price: rand(50...250),
+            wizard_id: Wizard.all.sample
         }
 
         wand = Wand.create(data)
@@ -81,8 +191,8 @@ def post_data
     30.times do
         data = {
             title: Faker::Quote.unique.famous_last_words,
-            content: Faker::TvShows::MichaelScott.quote,
-            timestamp: Faker::Time.between(from: DateTime.now - 1, to: DateTime.now),
+            content: Faker::Lorem.paragraph_by_chars,
+            timestamp: Faker::Time.between(from: DateTime.now - 365, to: DateTime.now),
             wizard_id: Wizard.all.sample.id
         }
 
@@ -94,7 +204,7 @@ def comment_data
     27.times do
         data = {
             content: Faker::TvShows::Community.unique.quotes,
-            timestamp: Faker::Time.between(from: DateTime.now - 1, to: DateTime.now),
+            timestamp: Faker::Time.between(from: DateTime.now - 365, to: DateTime.now),
             wizard_id: Wizard.all.sample.id,
             post_id: Post.all.sample.id
         }
@@ -111,6 +221,28 @@ def upvote_data
         }
         
         upvote = Upvote.create(data)
+    end
+end
+
+def wizard_image_data
+    url = "https://www.gettyimages.com/photos/harry-potter?family=editorial&phrase=harry%20potter&sort=mostpopular"
+        
+    html = Nokogiri::HTML(open(url))
+
+    Wizard.all.each.with_index do |wizard, index|
+        wizard.img_url = html.css(".gallery-mosaic-asset article a figure img")[index].attr("src")
+        wizard.save
+    end
+end
+
+def wand_image_data
+    url = "https://www.gettyimages.com/photos/wand?family=creative&license=rf&mediatype=photography&phrase=wand&sort=mostpopular"
+        
+    html = Nokogiri::HTML(open(url))
+
+    Wand.all.each.with_index do |wand, index|
+        wand.img_url = html.css(".gallery-mosaic-asset article a figure img")[index].attr("src")
+        wand.save
     end
 end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_07_154736) do
+ActiveRecord::Schema.define(version: 2020_12_07_193144) do
 
   create_table "comments", force: :cascade do |t|
     t.string "content"
@@ -21,9 +21,8 @@ ActiveRecord::Schema.define(version: 2020_12_07_154736) do
 
   create_table "houses", force: :cascade do |t|
     t.string "name"
-    t.string "founder"
-    t.string "head_master"
     t.string "mascot"
+    t.string "img_url"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -37,6 +36,7 @@ ActiveRecord::Schema.define(version: 2020_12_07_154736) do
     t.string "name"
     t.string "effect"
     t.integer "price"
+    t.string "img_url"
   end
 
   create_table "upvotes", force: :cascade do |t|
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(version: 2020_12_07_154736) do
     t.string "name"
     t.integer "price"
     t.integer "wizard_id"
+    t.string "img_url"
   end
 
   create_table "wizard_friends", force: :cascade do |t|
@@ -69,6 +70,7 @@ ActiveRecord::Schema.define(version: 2020_12_07_154736) do
     t.string "password_digest"
     t.integer "founder_id"
     t.integer "head_master_id"
+    t.string "img_url"
   end
 
 end

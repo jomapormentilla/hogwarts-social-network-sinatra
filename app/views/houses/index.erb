@@ -49,8 +49,8 @@
             <div class="card">
                 <div class="card-header"><h2><a href="/houses/<%= house.slug %>"><%= house.name %></a></h2></div>
                 <div class="card-body">
-                    <p>Founder: <%= house.founder %></p>
-                    <p>Head Master: <%= house.head_master %></p>
+                    <p>Founder: <a href="/wizards/<%= house.founder.slug %>"><%= house.founder.name %></a></p>
+                    <p>Head Master: <a href="/wizards/<%= house.head_master.slug %>"><%= house.head_master.name %></a></p>
                     <p>House <%= house.name %> currently has <%= house.wizards.size %> wizards.</p>
                 </div>
             </div><br />
