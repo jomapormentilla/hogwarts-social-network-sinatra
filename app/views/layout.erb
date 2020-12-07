@@ -18,21 +18,29 @@
                     </div>
                 <% else %>
                     <div class="col-md-12 px-0">
-                        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                            <img src="/images/hogwarts-logo-300x300.png" alt="Logo" class="float-left py-1" style="width: 50px;"/>
-                            <a class="navbar-brand" href="/wizards/<%= current_wizard.slug %>"><%= current_wizard.username.upcase %></a>
-                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                                 <span class="navbar-toggler-icon"></span>
                             </button>
+                            <img src="/images/hogwarts-logo-300x300.png" alt="Logo" class="float-left py-1" style="width: 50px;"/>
+                            <a class="navbar-brand" href="/wizards/<%= current_wizard.slug %>"><%= current_wizard.username.upcase %></a>
+                            
                             <div class="collapse navbar-collapse" id="navbarNav">
-                            <ul class="navbar-nav text-right">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/houses">Home</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/spells">Spell Shop</a>
-                                </li>
-                            </ul>
+                                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/houses">Home</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/wizards">Wizards</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/shop">Shop</a>
+                                    </li>
+                                </ul>
+                                <form class="form-inline my-2 my-lg-0">
+                                    <input class="form-control mr-sm-2" type="search" placeholder="Stretch Goal" aria-label="Search">
+                                    <button class="btn btn-outline-success my-2 my-sm-0" type="button">Search</button>
+                                </form>
                             </div>
                         </nav>
                     </div>

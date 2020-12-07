@@ -1,4 +1,4 @@
-<h1>Wizards</h1>
+<h1><small><a href="/houses">Home</a> < </small>Wizards Directory</h1>
 
 <table class="table table-striped table-hover table-bordered table-condensed">
     <tr>
@@ -12,7 +12,7 @@
             <td><%= index %></td>
             <td><a href="/wizards/<%= wizard.slug %>"><%= wizard.name %></a></td>
             <td><%= wizard.email %></td>
-            <td><%= wizard.house.name %></td>
+            <td><a href="/houses/<%= wizard.house.slug %>"><%= wizard.house.name %></a></td>
         </tr>
     <% end %>
 </table>

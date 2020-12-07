@@ -1,23 +1,20 @@
-<div class="row">
-    <div class="col-md-5">
-        <h1>Welcome to Hogwarts</h1>
+<h1>Welcome to Hogwarts</h1>
 
-        <% @houses.each do |house| %>
-            <div class="card">
-                <div class="card-body">
-                    <h2><a href="/houses/<%= house.slug %>"><%= house.name %></a></h2>
-                    <p>Founder: <%= house.founder %></p>
-                    <p>Head Master: <%= house.head_master %></p>
-                    <p>House <%= house.name %> currently has <%= house.wizards.size %> wizards.</p>
-                </div>
+<div class="row">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header"><h3><%= current_wizard.username.upcase %></h3></div>
+            <img src="/images/hogwarts-logo-v2.png" alt="profile" class="card-img-top" />
+            <hr />
+            <div class="card-body">
+                Fill this in later. "/houses/index.erb"
             </div>
-            <br />
-        <% end %>
+        </div><br />
     </div>
 
-    <div class="col-md-7">
-        <div class="card">
-            <div class="card-header">Recent Posts</div>
+    <div class="col-md-6">
+        <div class="card bg-light shadow">
+            <div class="card-header"><h3>Recent Posts</h3></div>
             <div class="card-body">
                 <% @houses.each do |house| %>
                     <div class="card">
@@ -26,11 +23,26 @@
                             <h4 class="card-title"><%= post.title %></h4>
                             <p>By: <a href="/wizards/<%= post.wizard.slug %>"><%= post.wizard.username %></a></p>
                             <p class="card-text"><%= post.content %></p>
-                            <p><%= post.upvotes.size %> Upvote<%= 's' if post.upvotes.size != 1 %> | <a href="/posts/<%= post.id %>"><%= post.comments.size %> Comment<%= 's' if post.comments.size != 1 %></a></p>
+                            <hr />
+                            <%= post.upvotes.size %> Upvote<%= 's' if post.upvotes.size != 1 %> | <a href="/posts/<%= post.id %>"><%= post.comments.size %> Comment<%= 's' if post.comments.size != 1 %></a>
                         </div>
                     </div><br />
                 <% end %>
             </div>
         </div>
+    </div>
+
+    <div class="col-md-3">
+        <% @houses.each do |house| %>
+            <div class="card">
+                <div class="card-header"><h2><a href="/houses/<%= house.slug %>"><%= house.name %></a></h2></div>
+                <div class="card-body">
+                    <p>Founder: <%= house.founder %></p>
+                    <p>Head Master: <%= house.head_master %></p>
+                    <p>House <%= house.name %> currently has <%= house.wizards.size %> wizards.</p>
+                </div>
+            </div>
+            <br />
+        <% end %>
     </div>
 </div>

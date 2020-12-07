@@ -59,11 +59,16 @@ class ApplicationController < Sinatra::Base
         
         wizard_new.name = "#{ params[:fname] } #{ params[:lname] }"
         wizard_new.house = House.all.sample
+        wizard_new.balance = 1000
         wizard_new.save
 
         flash[:message] = "Congratulations, #{ wizard_new.username.upcase } - You're a wizard!"
         flash[:alert_type] = "success"
         redirect '/'
+    end
+
+    get '/shop' do
+        erb :'shop/index'
     end
 
     get '/logout' do
@@ -94,7 +99,7 @@ class ApplicationController < Sinatra::Base
 
     def redirect_if_logged_in
         if logged_in?
-            redirect '/houses'
+            redirect "/wizards/#{ current_wizard.slug }"
         end
     end
 end
