@@ -16,7 +16,10 @@
                                 <span style="color: #777;"><%= parse_timestamp post.timestamp %></span></p>
                             <br />
                             <p class="card-text"><%= post.content %></p>
-                            <p><%= post.upvotes.size %> Upvote<%= 's' if post.upvotes.size != 1 %> | <a href="/posts/<%= post.id %>"><%= post.comments.size %> Comment<%= 's' if post.comments.size != 1 %></a></p>
+                            <form action="/posts/<%= post.id %>/upvote" method="POST">
+                                <button type="submit" class="btn btn-outline-info btn-sm" <%= 'disabled' if post.upvotes.any?{|up| up.wizard == current_wizard} %>><%= post.upvotes.size %> Upvote<%= 's' if post.upvotes.size != 1 %></button> &nbsp; 
+                                <a href="/posts/<%= post.id %>" type="button" class="btn btn-outline-primary btn-sm"><%= post.comments.size %> Comment<%= 's' if post.comments.size != 1 %></a>
+                            </form>
                         </div>
                     </div>
                     <br />

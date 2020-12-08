@@ -14,8 +14,28 @@
             <div class="card-header text-center"><h2><%= @wizard.name %></h2></div>
             <img src="<%= @wizard.img_url == nil ? '/images/hogwarts-logo-300x300.png' : @wizard.img_url %>" alt="profile" class="card-img-top p-2" />
             <div class="card-body">
-                <p>House: <a href="/houses/<%= @wizard.house.slug %>"><%= @wizard.house.name %></a></p>
-                <p>Wand: <%= @wizard.wand != nil ? @wizard.wand.name : 'Does not own a wand' %></p>
+                <table class="table table-sm">
+                    <tr>
+                        <td style="text-align: right; padding-right: 5px;">Username:</td>
+                        <td><%= @wizard.username.upcase %></td>
+                    <tr>
+                    <tr>
+                        <td style="text-align: right; padding-right: 5px;">Name:</td>
+                        <td><%= @wizard.name %></td>
+                    <tr>
+                    <tr>
+                        <td style="text-align: right; padding-right: 5px;">Email:</td>
+                        <td><%= @wizard.email %></td>
+                    <tr>
+                    <tr>
+                        <td style="text-align: right; padding-right: 5px;">Wand:</td>
+                        <td><%= @wizard.wand.name %></td>
+                    <tr>
+                    <tr>
+                        <td style="text-align: right; padding-right: 5px;">House:</td>
+                        <td><a href="/houses/<%= @wizard.house.slug %>"><%= @wizard.house.name %></a></td>
+                    <tr>
+                </table>
                 
                 <% if is_current_session? @wizard %>
                     <hr />
@@ -36,14 +56,12 @@
                 <div class="card-body">
                     <form action="/posts" method="POST">
                         <input type="text" name="post[title]" placeholder="Post Title..." class="form-control" /><br />
-                        <textarea name="post[content]" placeholder="Post Content..." class="form-control"></textarea><br />
+                        <textarea name="post[content]" rows="5" placeholder="Post Content..." class="form-control"></textarea><br />
                         <button class="btn btn-block btn-outline-secondary">Create Post</button>
                     </form>
                 </div>
             </div><br />
         <% end %>
-            
-        </form>
 
         <% if @wizard.posts.empty? %>
             <div class="alert alert-info text-center"><%= @wizard.username.upcase %> does not have any posts.</div>
@@ -90,6 +108,19 @@
 
                 <% @all_friends.sort_by(&:name).each do |friend| %>
                     <p><a href="/wizards/<%= friend.slug %>"><%= friend.name %></a></p>
+                <% end %>
+            </div>
+        </div><br />
+
+        <div class="card">
+            <h4 class="card-header">Recent Upvotes</h4>
+            <div class="card-body">
+                <% if !@wizard.upvotes.empty? %>
+                    <% @wizard.upvotes.order(:id).reverse[0..9].each do |upvote| %>
+                        <li><a href="/posts/<%= upvote.post.id %>"><%= upvote.post.title %></a></li>
+                    <% end %>
+                <% else %>
+                    No upvoted posts to display.
                 <% end %>
             </div>
         </div>

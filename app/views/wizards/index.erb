@@ -1,25 +1,39 @@
 <div class="row">
+
     <div class="col-md-12">
-        <div class="alert alert-light text-center"><h1>Wizards Directory</h1></div>
+        <div class="alert alert-dark text-center"><h1>Wizards Directory (<%= @wizards.size %>)</h1></div>
     </div>
 
-    
+    <% if flash.has?(:message) %>
+        <div class="col-md-12">
+            <div class="alert alert-<%= flash[:alert_type] %> text-center" style="font-size: 20px;"><%= flash[:message] %></div>
+        </div>
+    <% end %>
+
     <div class="col-md-12 table-responsive">
-        <table class="table table-striped table-hover table-bordered table-condensed" style="background-color: #fff;">
-            <tr>
-                <th></th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>House</th>
-            </tr>
-            <% @wizards.each.with_index(1) do |wizard, index| %>
-                <tr>
-                    <td><%= index %></td>
-                    <td><a href="/wizards/<%= wizard.slug %>"><%= wizard.name %></a></td>
-                    <td><%= wizard.email %></td>
-                    <td><a href="/houses/<%= wizard.house.slug %>"><%= wizard.house.name %></a></td>
-                </tr>
-            <% end %>
-        </table>
+        <% @wizards.each do |wizard| %>
+            <div class="media">
+                <a href="/wizards/<%= wizard.slug %>"><img src="<%= wizard.img_url == nil ? '/images/hogwarts-logo-300x300.png' : wizard.img_url %>" alt="profile-img" class="mr-3 py-2" style="width: 64px;" /></a>
+                <div class="media-body">
+                    <% if wizard != current_wizard %>
+                        <% if !wizard.added_friends.include?(current_wizard) %>
+                            <form action="/wizards/<%= wizard.slug %>/add_friend" method="POST">
+                                <button type="submit" class="btn btn-outline-info btn-sm float-right">Add as Friend</button>
+                            </form>
+                        <% else %>
+                            <form action="/wizards/<%= wizard.slug %>/remove_friend" method="POST">
+                                <button class="btn btn-outline-danger btn-sm float-right">Unfriend</button>
+                            </form>
+                        <% end %>
+                    <% end %>
+                    <h2 class="mt-0"><a href="/wizards/<%= wizard.slug %>"><%= wizard.name %></a></h2>
+                    <p> Email: <%= wizard.email %><br />
+                        House: <a href="/houses/<%= wizard.house.slug %>"><%= wizard.house.name %></a><br />
+                        Wand: <%= wizard.wand == nil ? 'None' : wizard.wand.name %><br />
+                        Friends: <%= wizard.friends.size + wizard.added_friends.size %>
+                    </p>
+                </div>
+            </div><hr />
+        <% end %>
     </div>
 </div>

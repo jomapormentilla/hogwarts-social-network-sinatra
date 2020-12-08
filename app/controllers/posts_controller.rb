@@ -60,7 +60,7 @@ class PostsController < ApplicationController
         post.delete
 
         flash[:message] = "Post deleted!"
-        flash[:alert_type] = "success"
+        flash[:alert_type] = "info"
         redirect "/wizards/#{ current_wizard.slug }"
     end
 end

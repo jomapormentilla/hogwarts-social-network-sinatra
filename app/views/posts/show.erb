@@ -1,4 +1,10 @@
 <div class="row">
+    <% if flash.has?(:message) %>
+        <div class="col-md-12">
+            <div class="alert alert-<%= flash[:alert_type] %> text-center"><%= flash[:message] %></div>
+        </div>
+    <% end %>
+
     <div class="col-md-9">
         <div class="card bg-light">
             <div class="card-header">
@@ -6,7 +12,7 @@
                         <a href="/posts/<%= @post.id %>/edit" class="btn btn-outline-warning btn-sm float-right">Edit</a>
                 <% end %>
                 <div class="media">
-                    <img src="<%= @post.wizard.img_url == nil ? '/images/hogwarts-logo-300x300.png' : @post.wizard.img_url %>" style="width: 64px;" alt="profile" class="align-self-start mr-3">
+                    <a href="/wizards/<%= @post.wizard.slug %>"><img src="<%= @post.wizard.img_url == nil ? '/images/hogwarts-logo-300x300.png' : @post.wizard.img_url %>" style="width: 64px;" alt="profile" class="align-self-start mr-3 py-2"></a>
                     <div class="media-body">
                         <h2 class="mt-0"><%= @post.title %></h2>
                         <h5 class="mt-0"><a href="/wizards/<%= @post.wizard.slug %>"><%= @post.wizard.username %></a></h5>
@@ -62,6 +68,10 @@
                         <td><%= @post.wizard.name %></td>
                     <tr>
                     <tr>
+                        <td style="text-align: right; padding-right: 5px;">Email:</td>
+                        <td><%= @post.wizard.email %></td>
+                    <tr>
+                    <tr>
                         <td style="text-align: right; padding-right: 5px;">House:</td>
                         <td><a href="/houses/<%= @post.wizard.house.slug %>"><%= @post.wizard.house.name %></a></td>
                     <tr>
@@ -70,6 +80,11 @@
                     <form action="/wizards/<%= @post.wizard.slug %>/add_friend" method="POST">
                         <input type="hidden" name="friend_id" value="<%= @post.wizard.slug %>" />
                         <button type="submit" class="btn btn-block btn-outline-primary btn-sm">Add as Friend</button>
+                    </form><br />
+                <% else %>
+                    <form action="/wizards/<%= @post.wizard.slug %>/remove_friend" method="POST">
+                        <input type="hidden" name="friend_id" value="<%= @post.wizard.slug %>" />
+                        <button type="submit" class="btn btn-block btn-outline-danger btn-sm">Unfriend</button>
                     </form><br />
                 <% end %>
                 <a href="/wizards/<%= @post.wizard.slug %>" class="btn btn-block btn-outline-info btn-sm">View Profile</a>
