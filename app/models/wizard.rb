@@ -11,12 +11,20 @@ class Wizard < ActiveRecord::Base
     has_many :added_friends, through: :wizard_added_friends
     
     has_one :wand
-    
+
     has_many :posts
     has_many :comments
     has_many :upvotes
 
     has_secure_password
+
+    before_destroy :destroy_associated_objects
+
+    def destroy_associated_objects
+        self.posts.destroy_all
+        self.comments.destroy_all
+        self.upvotes.destroy_all
+    end
 
     extend Slugifiable::ClassMethods
     include Slugifiable::InstanceMethods

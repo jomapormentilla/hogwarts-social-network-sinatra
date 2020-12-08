@@ -53,9 +53,12 @@ class WizardsController < ApplicationController
         redirect "/wizards/#{ current_wizard.slug }"
     end
 
-    delete '/wizards/delete' do
-        current_wizard.delete
+    delete '/wizards/:slug/delete' do
+        wizard = Wizard.find_by_slug(params[:slug])
+        redirect_if_not_current_wizard( wizard )
+
         session.clear
+        Wizard.destroy(wizard.id)
 
         flash[:message] = "Your account has been deleted."
         flash[:alert_type] = "danger"
