@@ -68,6 +68,7 @@ class ApplicationController < Sinatra::Base
     end
 
     get '/shop' do
+        @wands = Wand.all
         erb :'shop/index'
     end
 

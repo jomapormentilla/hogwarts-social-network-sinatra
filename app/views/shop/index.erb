@@ -1,12 +1,64 @@
-<span class="badge badge-info float-right" style="font-size: 18px;">Balance: <%= current_wizard.balance %></span>
-<h1>Hogwarts Shop!</h1>
-
 <div class="row">
-    <div class="col-md-8">
-        <% if current_wizard.wand == nil %>
-            <div class="alert alert-primary text-center">
-                Hey, <%= current_wizard.name.split[0] %>! Looks like you could use a wand! Browse through our wands to find the perfect one for you!
+    <div class="col-md-3 sticky-top">
+        <div class="card">
+            <h2 class="card-header text-center">Cart</h2>
+            <div class="card-body">
+                Balance: <span class="float-right"><%= current_wizard.balance %> Sickles</span>
+                <hr />
+                <% if current_wizard.wand == nil %>
+                    <div class="alert alert-primary text-center">
+                        Hey, <%= current_wizard.name.split[0] %>! Looks like you could use a wand! Browse through our wands to find the perfect one for you!
+                    </div>
+                <% end %>
             </div>
-        <% end %>
+        </div><br />
+    </div>
+
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-header">
+                <a href="" class="float-right">Browse All Wands >></a>
+                <h2>Wands</h2>
+            </div>
+            <div class="card-body">
+                <div class="card-group">
+
+                <% 4.times do %>
+                    <% wand = Wand.all.sample %>
+                    <div class="card" style="width: 18rem;">
+                        <img src="<%= wand.img_url %>" class="card-img-top" alt="wand_<%= wand.id %>">
+                        <div class="card-body">
+                            <h3 class="card-title"><%= wand.name %></h3>
+                            <p class="card-text" style="color: #32a2b7; font-size: 20px;"><%= wand.price %><span style="vertical-align: super; font-size: 12px; line-height: normal;">.00</span> Sickles</p>
+                            <span>Hey, Steve! Looks like you could use a wand! Browse through our wands to find the perfect one for you!</span>
+                        </div>
+                    </div>
+                <% end %>
+                </div>
+            </div>
+        </div><br />
+
+        <div class="card">
+            <div class="card-header">
+                <a href="" class="float-right">Browse All Spells >></a>
+                <h2>Spells</h2>
+            </div>
+            <div class="card-body">
+                <div class="card-group">
+
+                <% 4.times do %>
+                    <% wand = Wand.all.sample %>
+                    <div class="card" style="width: 18rem;">
+                        <img src="<%= wand.img_url %>" class="card-img-top" alt="wand_<%= wand.id %>">
+                        <div class="card-body">
+                            <h3 class="card-title"><%= wand.name %></h3>
+                            <p class="card-text" style="color: #32a2b7; font-size: 20px;"><%= wand.price %><span style="vertical-align: super; font-size: 12px; line-height: normal;">.00</span> Sickles</p>
+                            <span>Hey, Steve! Looks like you could use a wand! Browse through our wands to find the perfect one for you!</span>
+                        </div>
+                    </div>
+                <% end %>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
