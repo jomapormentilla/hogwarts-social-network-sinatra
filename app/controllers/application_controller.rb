@@ -98,6 +98,13 @@ class ApplicationController < Sinatra::Base
         def parse_timestamp( time )
             time.strftime("%B %d, %Y, %l:%M%P")
         end
+
+        def redirect_to_previous_page( request_obj )
+            origin = request_obj.env["HTTP_ORIGIN"]
+            path = request_obj.env["HTTP_REFERER"].gsub(origin,"")
+
+            redirect "#{ path }"
+        end
     end
 
     private

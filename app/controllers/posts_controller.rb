@@ -22,12 +22,12 @@ class PostsController < ApplicationController
 
         flash[:message] = "Your post has been published!"
         flash[:alert_type] = "success"
-        redirect "/wizards/#{ current_wizard.slug }"
+        redirect_to_previous_page( request )
     end
 
     post '/posts/:id/upvote' do
         upvote = Upvote.create(wizard_id: current_wizard.id, post_id: params[:id])
-        redirect "/posts/#{ params[:id] }"
+        redirect_to_previous_page( request )
     end
 
     get '/posts/:id/edit' do
