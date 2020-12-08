@@ -1,1 +1,27 @@
-<h1>Edit Profile</h1>
+<div class="row">
+    <div class="col-md-12"><h1>Edit Profile</h1></div>
+
+    <div class="col-md-6">
+        <form action="/wizards/edit" method="POST">
+            <label for="wizard[username]">Username</label>
+            <input type="text" id="username" name="username" value="<%= @wizard.username %>" class="form-control" /><br />
+
+            <label for="fname">First Name</label>
+            <input type="text" id="fname" name="fname" value="<%= @wizard.name.split[0] %>" class="form-control" /><br />
+
+            <label for="lname">Last Name</label>
+            <input type="text" id="lname" name="lname" value="<%= @wizard.name.split[1] %>" class="form-control" /><br />
+
+            <label for="wizard[email]">Email</label>
+            <input type="text" id="wizard[email]" name="wizard[email]" value="<%= @wizard.email %>" class="form-control" /><br />
+
+            <button type="submit" class="btn btn-outline-warning btn-sm btn-block">Edit Profile</button>
+        </form><br /><br />
+
+        <form action="/wizards/delete" post="POST">
+            <input type="hidden" name="_method" value="DELETE" />
+            <button type="submit" class="btn btn-block btn-danger btn-sm">DELETE ACCOUNT</button>
+        </form>
+    </div>
+</div>
+

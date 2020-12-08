@@ -39,7 +39,7 @@
                 
                 <% if is_current_session? @wizard %>
                     <hr />
-                    <a href="/wizards/<%= @wizard.slug %>/edit" class="btn btn-block btn-outline-secondary btn-sm">Edit</a>
+                    <a href="/wizards/<%= @wizard.slug %>/edit" class="btn btn-block btn-outline-secondary btn-sm">Edit Profile</a>
                     <br />
                     <form action="/logout" method="POST">
                         <button type="submit" class="btn btn-block btn-outline-danger btn-sm float-right">Logout</button>
@@ -69,9 +69,6 @@
             <% @wizard.posts.order(:id).reverse[0..19].each do |post| %>
                 <div class="card">
                     <div class="card-header">
-                        <% if is_current_session? @wizard %>
-                            <a href="/posts/<%= post.id %>/edit" class="btn btn-outline-warning btn-sm float-right">Edit</a>
-                        <% end %>
                         <h2><%= post.title %></h2>
                     </div>
                     <div class="card-body">
@@ -81,7 +78,11 @@
                         <form action="/posts/<%= post.id %>/upvote" method="POST">
                             <button type="submit" class="btn btn-outline-info btn-sm" <%= 'disabled' if post.upvotes.any?{|up| up.wizard == current_wizard} %>><%= post.upvotes.size %> Upvote<%= 's' if post.upvotes.size != 1 %></button> &nbsp; 
                             <a href="/posts/<%= post.id %>" type="button" class="btn btn-outline-primary btn-sm"><%= post.comments.size %> Comment<%= 's' if post.comments.size != 1 %></a>
+                            <% if is_current_session? @wizard %>
+                                <a href="/posts/<%= post.id %>/edit" class="btn btn-outline-warning btn-sm float-right">Edit Post</a>
+                            <% end %>
                         </form>
+
                     </div>
                 </div><br />
             <% end %>
@@ -107,7 +108,7 @@
                 <% end %>
 
                 <% @all_friends.sort_by(&:name).each do |friend| %>
-                    <p><a href="/wizards/<%= friend.slug %>"><%= friend.name %></a></p>
+                    <a href="/wizards/<%= friend.slug %>"><%= friend.name %></a><br />
                 <% end %>
             </div>
         </div><br />

@@ -39,6 +39,29 @@ class WizardsController < ApplicationController
         erb :'/wizards/edit'
     end
 
+    patch '/wizards/edit' do
+        new_name = "#{ params[:fname] } #{ params[:lname] }"
+
+        data = {
+            username: params[:wizard][:username],
+            name: new_name,
+            email: params[:wizard][:email]
+        }
+
+        current_wizard.update(data)
+
+        redirect "/wizards/#{ current_wizard.slug }"
+    end
+
+    delete '/wizards/delete' do
+        current_wizard.delete
+        session.clear
+
+        flash[:message] = "Your account has been deleted."
+        flash[:alert_type] = "danger"
+        redirect '/'
+    end
+
     private
 
     def is_founder?( wizard )
