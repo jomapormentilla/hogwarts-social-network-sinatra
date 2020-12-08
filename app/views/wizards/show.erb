@@ -13,11 +13,11 @@
         <div class="card">
             <div class="card-header text-center"><h2><%= @wizard.name %></h2></div>
             <img src="<%= @wizard.img_url == nil ? '/images/hogwarts-logo-300x300.png' : @wizard.img_url %>" alt="profile" class="card-img-top p-2" />
-            <div class="card-body">
+            <div class="card-body table-responsive">
                 <table class="table table-sm">
                     <tr>
                         <td style="text-align: right; padding-right: 5px;">Username:</td>
-                        <td><%= @wizard.username.upcase %></td>
+                        <td><%= @wizard.username %></td>
                     <tr>
                     <tr>
                         <td style="text-align: right; padding-right: 5px;">Name:</td>
@@ -118,17 +118,48 @@
         </div><br />
 
         <div class="card">
-            <h4 class="card-header">Recent Upvotes</h4>
+            <h4 class="card-header">Notifications</h4>
             <div class="card-body">
-                <% if !@wizard.upvotes.empty? %>
-                    <% @wizard.upvotes.order(:id).reverse[0..9].each do |upvote| %>
-                        <li><a href="/posts/<%= upvote.post.id %>"><%= upvote.post.title %></a></li>
+                <ul class="list-group">
+                    
+                    <% if !@wizard.posts.empty? %>
+                        <% @wizard.posts.each do |post| %>
+                            <% post_arr = [] %>
+                            <% post.upvotes.order(:id).reverse.each do |upvote| %>
+                                <% post_arr << upvote.wizard %>
+                            <% end %>
+                            <li class="list-group-item">
+                                <p><a href="/posts/<%= post.id %>"><%= post.title %></a> received an upvote from</p>
+                                <% post_arr.each do |wizard| %>
+                                    <% if wizard == post_arr[-1] %>
+                                        <a href="/wizards/<%= wizard.slug %>"><%= wizard.name %></a>
+                                    <% else %>
+                                        <a href="/wizards/<%= wizard.slug %>"><%= wizard.name %></a>,
+                                    <% end %>
+                                <% end %><br />
+                            </li>
+                        <% end %>
+                    <% else %>
+                        No notifications to display.
                     <% end %>
-                <% else %>
-                    No upvoted posts to display.
-                <% end %>
+                </ul>
             </div>
-        </div>
+        </div><br />
+
+        <div class="card">
+            <h4 class="card-header">Your Recent Upvotes</h4>
+            <div class="card-body">
+                <ul class="list-group">
+                    <% if !@wizard.upvotes.empty? %>
+                        <% @wizard.upvotes.order(:id).reverse[0..9].each do |upvote| %>
+                            <li class="list-group-item"><a href="/posts/<%= upvote.post.id %>"><%= upvote.post.title %></a></li>
+                        <% end %>
+                    <% else %>
+                        No upvoted posts to display.
+                    <% end %>
+                </ul>
+            </div>
+        </div><br />
     </div>
 </div>
 <br />

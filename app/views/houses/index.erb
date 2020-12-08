@@ -1,26 +1,32 @@
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
         <div class="alert alert-dark text-center">
             <h2>Welcome to Hogwarts</h2>
             <span>School of Witchcraft & Wizardry</span>
         </div>
     </div>
+    <div class="col-md-1"></div>
 
+    <div class="col-md-1"></div>
     <div class="col-md-3">
-        <div class="card">
-            <div class="card-header text-center">
-                <h3>Welcome to Hogwarts</h3>
-                <span>School of Witchcraft & Wizardry</span>
-            </div>
-            <img src="/images/hogwarts-logo-v2.png" alt="profile" class="card-img-top" />
-            <hr />
-            <div class="card-body">
-                Fill this in later. "/houses/index.erb"
-            </div>
-        </div><br />
+        <div class="row">
+            <% @houses.each do |house| %>
+                <div class="col-sm-6 col-md-12">
+                    <div class="card">
+                        <div class="card-header"><h2><a href="/houses/<%= house.slug %>"><%= house.name %></a></h2></div>
+                        <div class="card-body">
+                            <p> Founder: <a href="/wizards/<%= house.founder.slug %>"><%= house.founder.name %></a><br />
+                                Head Master: <a href="/wizards/<%= house.head_master.slug %>"><%= house.head_master.name %></a><br />
+                            </p>
+                            <p>House <%= house.name %> currently has <%= house.wizards.size %> wizards.</p>
+                        </div>
+                    </div><br />
+                </div>
+            <% end %>
+        </div>
     </div>
-
-    <div class="col-md-6">
+    <div class="col-md-7">
         <div class="card bg-light shadow">
             <div class="card-header"><h3>Recent Posts</h3></div>
             <div class="card-body">
@@ -41,18 +47,5 @@
                 <% end %>
             </div>
         </div><br />
-    </div>
-
-    <div class="col-md-3">
-        <% @houses.each do |house| %>
-            <div class="card">
-                <div class="card-header"><h2><a href="/houses/<%= house.slug %>"><%= house.name %></a></h2></div>
-                <div class="card-body">
-                    <p>Founder: <a href="/wizards/<%= house.founder.slug %>"><%= house.founder.name %></a></p>
-                    <p>Head Master: <a href="/wizards/<%= house.head_master.slug %>"><%= house.head_master.name %></a></p>
-                    <p>House <%= house.name %> currently has <%= house.wizards.size %> wizards.</p>
-                </div>
-            </div><br />
-        <% end %>
     </div>
 </div>

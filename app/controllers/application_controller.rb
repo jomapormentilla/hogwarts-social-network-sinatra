@@ -73,7 +73,7 @@ class ApplicationController < Sinatra::Base
     end
 
     get '/logout' do
-        session.clear
+        redirect_if_logged_in
         redirect '/'
     end
 
@@ -96,7 +96,8 @@ class ApplicationController < Sinatra::Base
         end
 
         def parse_timestamp( time )
-            time.strftime("%B %d, %Y, %l:%M%P")
+            _time = time.in_time_zone('Eastern Time (US & Canada)')
+            _time.strftime("%B %d, %Y, %l:%M%P")
         end
 
         def redirect_to_previous_page( request_obj )

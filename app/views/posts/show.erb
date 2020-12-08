@@ -1,11 +1,14 @@
 <div class="row">
     <% if flash.has?(:message) %>
-        <div class="col-md-12">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
             <div class="alert alert-<%= flash[:alert_type] %> text-center"><%= flash[:message] %></div>
         </div>
+        <div class="col-md-1"></div>
     <% end %>
 
-    <div class="col-md-9">
+    <div class="col-md-1"></div>
+    <div class="col-md-7">
         <div class="card bg-light">
             <div class="card-header">
                 <% if is_current_session? @post.wizard %>
@@ -29,21 +32,30 @@
                 </form>
                 <hr />
 
+                <% if flash.has?(:comment_message) %>
+                    <div class="alert alert-<%= flash[:alert_type] %> text-center"><%= flash[:comment_message] %></div>
+                <% end %>
                 <form action="/comments/<%= @post.id %>/new" method="POST">
                     <textarea name="content" rows="5" placeholder="<%= current_wizard.username.upcase %> says..." class="form-control" /></textarea><br />
                     <button type="submit" class="btn btn-primary" />Add Comment</button>
                 </form>
 
                 <hr />
-                <% @post.comments.each do |comment| %>
+                <% @post.comments.order(:id).reverse.each do |comment| %>
                     <div class="media">
                         <img src="<%= comment.wizard.img_url == nil ? '/images/hogwarts-logo-300x300.png' : comment.wizard.img_url %>" style="width: 64px;" alt="profile" class="align-self-start mr-3 py-1">
                         <div class="media-body">
+                            <% if is_current_session?(comment.wizard) %>
+                                <form action="/comments/<%= comment.id %>" method="POST">
+                                    <input type="hidden" name="_method" value="DELETE" />
+                                    <button type="submit" class="btn btn-outline-danger btn-sm float-right">Delete Comment</button>
+                                </form>
+                            <% end %>
                             <p class="mt-0">
                                 <a href="/wizards/<%= comment.wizard.slug %>" style="font-size:18px;"><%= comment.wizard.username %></a><br />
                                 <span style="color: #777;"><%= parse_timestamp comment.timestamp %></span>
                             </p>
-                            <p><%= comment.content %></p>
+                            <span><%= comment.content %></span>
                         </div>
                     </div>
                     <hr />
@@ -61,7 +73,7 @@
                 <table class="table table-sm">
                     <tr>
                         <td style="text-align: right; padding-right: 5px;">Username:</td>
-                        <td><%= @post.wizard.username.upcase %></td>
+                        <td><%= @post.wizard.username %></td>
                     <tr>
                     <tr>
                         <td style="text-align: right; padding-right: 5px;">Name:</td>
