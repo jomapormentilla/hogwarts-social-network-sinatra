@@ -25,20 +25,19 @@
             <div class="card-header"><h3>Recent Posts</h3></div>
             <div class="card-body">
                 <% @posts.order(:id).reverse[0..9].each do |post| %>
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title"><%= post.title %></h4>
+                    <div class="media">
+                        <img src="<%= post.wizard.img_url == nil ? '/images/hogwarts-logo-300x300.png' : post.wizard.img_url %>" alt="profile" style="width: 64px;" class="align-self-start mr-3 py-1" />
+                        <div class="media-body">
+                            <h4 class="mt-0"><%= post.title %></h4>
                             <p>By: <a href="/wizards/<%= post.wizard.slug %>"><%= post.wizard.username %></a><br />
                                 <span style="color: #777;"><%= parse_timestamp post.timestamp %></span></p>
-                            <p class="card-text"><%= post.content %></p>
-                            <hr />
-                            <form action="/posts/<%= current_wizard.id %>/upvote" method="POST">
-                                <input type="hidden" name="post[id]" value="<%= post.id %>" />
+                            <p class="mt-0"><%= post.content %></p>
+                            <form action="/posts/<%= post.id %>/upvote" method="POST">
                                 <button type="submit" class="btn btn-outline-info btn-sm" <%= 'disabled' if post.upvotes.any?{|up| up.wizard == current_wizard} %>><%= post.upvotes.size %> Upvote<%= 's' if post.upvotes.size != 1 %></button> &nbsp; 
                                 <a href="/posts/<%= post.id %>" class="btn btn-outline-primary btn-sm"><%= post.comments.size %> Comment<%= 's' if post.comments.size != 1 %></a>
                             </form>
                         </div>
-                    </div><br />
+                    </div><hr />
                 <% end %>
             </div>
         </div><br />

@@ -95,15 +95,7 @@ class ApplicationController < Sinatra::Base
         end
 
         def parse_timestamp( time )
-            time.strftime("%l:%M%P - %B %d, %Y")
-        end
-
-        def redirect_if_not_current_wizard?( wizard )
-            if current_wizard.slug != wizard.slug
-                flash[:message] = "Invalid User Error"
-                flash[:alert_type] = "danger"
-                redirect "/wizards/#{ current_wizard.slug }"
-            end
+            time.strftime("%B %d, %Y, %l:%M%P")
         end
     end
 
@@ -111,6 +103,14 @@ class ApplicationController < Sinatra::Base
 
     def redirect_if_logged_in
         if logged_in?
+            redirect "/wizards/#{ current_wizard.slug }"
+        end
+    end
+
+    def redirect_if_not_current_wizard( wizard )
+        if current_wizard.slug != wizard.slug
+            flash[:message] = "Invalid User Error"
+            flash[:alert_type] = "danger"
             redirect "/wizards/#{ current_wizard.slug }"
         end
     end

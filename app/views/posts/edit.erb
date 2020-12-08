@@ -1,20 +1,52 @@
-<h1>Edit Post</h1>
 
 <div class="row">
-    <div class="col-md-3"></div>
-
-    <div class="col-md-6">
-        <form action="/posts/<%= @post.id %>" method="POST">
-            <label>Title</label>
-            <input type="text" name="post[title]" value="<%= @post.title %>" class="form-control" /><br />
-
-            <label>Content</label>
-            <textarea name="post[content]" class="form-control"><%= @post.content %></textarea><br />
-
-            <input type="hidden" name="_method" value="PATCH" />
-            <button type="submit" class="btn btn-block btn-outline-warning btn-sm">Edit Post</button>
-        </form>
+    <div class="col-md-12">
+        <div class="alert alert-light text-center"><h1>Edit Post</h1></div>
     </div>
 
-    <div class="col-md-3"></div>
+    <div class="col-md-7">
+        <div class="alert alert-light">
+            <form action="/posts/<%= @post.id %>" method="POST">
+                <h4>Title</h4>
+                <input type="text" name="post[title]" value="<%= @post.title %>" class="form-control" /><br />
+
+                <h4>Content</h4>
+                <textarea name="post[content]" rows="5" class="form-control"><%= @post.content %></textarea><br />
+
+                <input type="hidden" name="_method" value="PATCH" />
+                <button type="submit" class="btn btn-outline-warning btn-sm float-right">SUBMIT EDITS</button>
+            </form>
+
+            <form action="/posts/<%= @post.id %>" method="POST">
+                <input type="hidden" name="_method" value="DELETE" />
+                <button type="submit" class="btn btn-outline-danger btn-sm float-left">DELETE POST</button>
+            </form>
+            <br /><br />
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <div class="card">
+            <h3 class="card-header text-center">Comments (<%= @post.comments.size %>)</h3>
+
+            <div class="card-body">
+                <% if @post.comments.empty? %>
+                    <p class="card-text text-center">This post does not have any comments.</p>
+                <% else %>
+                    <% @post.comments.each do |comment| %>
+                        <div class="media">
+                            <img src="<%= comment.wizard.img_url == nil ? '/images/hogwarts-logo-300x300.png' : comment.wizard.img_url %>" style="width: 64px;" alt="profile" class="align-self-start mr-3 py-1">
+                            <div class="media-body">
+                                <p class="mt-0">
+                                    <a href="/wizards/<%= comment.wizard.slug %>" style="font-size:18px;"><%= comment.wizard.username %></a><br />
+                                    <span style="color: #777;"><%= parse_timestamp comment.timestamp %></span>
+                                </p>
+                                <p><%= comment.content %></p>
+                            </div>
+                        </div><hr />
+                    <% end %>
+                <% end %>
+            </div>
+        </div>
+    </div>    
 </div>

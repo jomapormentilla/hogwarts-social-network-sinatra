@@ -11,6 +11,7 @@ class Wizard < ActiveRecord::Base
     has_many :added_friends, through: :wizard_added_friends
     
     has_one :wand
+    
     has_many :posts
     has_many :comments
     has_many :upvotes

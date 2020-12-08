@@ -6,7 +6,7 @@ class WizardsController < ApplicationController
 
     get '/wizards/:slug' do
         @wizard = Wizard.find_by_slug(params[:slug])
-
+        
         @all_friends = []
         @wizard.friends.uniq.each{ |friend| @all_friends << friend }
         @wizard.added_friends.uniq.each{ |friend| @all_friends << friend }
@@ -34,7 +34,7 @@ class WizardsController < ApplicationController
 
     get '/wizards/:slug/edit' do
         @wizard = Wizard.find_by_slug(params[:slug])
-        redirect_if_not_current_wizard?( @wizard )
+        redirect_if_not_current_wizard( @wizard )
 
         erb :'/wizards/edit'
     end

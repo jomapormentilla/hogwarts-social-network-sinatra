@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
     get '/posts' do
-        
+        redirect '/houses'
     end
 
     get '/posts/:id' do
@@ -8,10 +8,7 @@ class PostsController < ApplicationController
         erb :'posts/show'
     end
 
-    post '/posts/:slug/new' do
-        wizard = Wizard.find_by_slug(params[:slug])
-        redirect_if_not_current_wizard?( wizard )
-
+    post '/posts' do
         if params[:post].values.include?("")
             flash[:message] = "All fields are required"
             flash[:alert_type] = "warning"
@@ -25,28 +22,27 @@ class PostsController < ApplicationController
 
         flash[:message] = "Your post has been published!"
         flash[:alert_type] = "success"
-        redirect "/posts/#{ post.id }"
+        redirect "/wizards/#{ current_wizard.slug }"
     end
 
     post '/posts/:id/upvote' do
-        wizard = Wizard.find_by_id(params[:id])
-        redirect_if_not_current_wizard?( wizard )
-
-        upvote = Upvote.create(wizard_id: wizard.id, post_id: params[:post][:id])
-        redirect "/posts/#{ params[:post][:id] }"
+        upvote = Upvote.create(wizard_id: current_wizard.id, post_id: params[:id])
+        redirect "/posts/#{ params[:id] }"
     end
 
     get '/posts/:id/edit' do
         @post = Post.find_by_id(params[:id])
         wizard = Wizard.find_by_slug(@post.wizard.slug)
-        redirect_if_not_current_wizard?( wizard )
+        redirect_if_not_current_wizard( wizard )
 
         erb :'/posts/edit'
     end
 
     patch '/posts/:id' do
         post = Post.find_by_id(params[:id])
-        
+        wizard = Wizard.find_by_slug(post.wizard.slug)
+        redirect_if_not_current_wizard( wizard )
+
         if params[:post].values.include?("")
             redirect "/posts/#{ params[:id] }"
         end
@@ -54,5 +50,17 @@ class PostsController < ApplicationController
         post.update(params[:post])
 
         redirect "/posts/#{ params[:id] }"
+    end
+
+    delete '/posts/:id' do
+        post = Post.find_by_id(params[:id])
+        wizard = Wizard.find_by_slug(post.wizard.slug)
+        redirect_if_not_current_wizard( wizard )
+
+        post.delete
+
+        flash[:message] = "Post deleted!"
+        flash[:alert_type] = "success"
+        redirect "/wizards/#{ current_wizard.slug }"
     end
 end

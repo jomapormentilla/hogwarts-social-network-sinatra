@@ -11,10 +11,10 @@
 
     <div class="col-sm-6 col-md-3">
         <div class="card">
-            <div class="card-header"><h3><%= @wizard.name %></h3></div>
-            <img src="<%= @wizard.img_url %>" alt="profile" class="card-img-top p-2" />
+            <div class="card-header text-center"><h2><%= @wizard.name %></h2></div>
+            <img src="<%= @wizard.img_url == nil ? '/images/hogwarts-logo-300x300.png' : @wizard.img_url %>" alt="profile" class="card-img-top p-2" />
             <div class="card-body">
-                <p>House: <%= @wizard.house.name %></p>
+                <p>House: <a href="/houses/<%= @wizard.house.slug %>"><%= @wizard.house.name %></a></p>
                 <p>Wand: <%= @wizard.wand != nil ? @wizard.wand.name : 'Does not own a wand' %></p>
                 
                 <% if is_current_session? @wizard %>
@@ -34,7 +34,7 @@
             <div class="card shadow">
                 <div class="card-header"><h3>Create a New Post</h3></div>
                 <div class="card-body">
-                    <form action="/posts/<%= @wizard.slug %>/new" method="POST">
+                    <form action="/posts" method="POST">
                         <input type="text" name="post[title]" placeholder="Post Title..." class="form-control" /><br />
                         <textarea name="post[content]" placeholder="Post Content..." class="form-control"></textarea><br />
                         <button class="btn btn-block btn-outline-secondary">Create Post</button>
@@ -48,14 +48,22 @@
         <% if @wizard.posts.empty? %>
             <div class="alert alert-info text-center"><%= @wizard.username.upcase %> does not have any posts.</div>
         <% else %>
-            <% @wizard.posts.each do |post| %>
+            <% @wizard.posts.order(:id).reverse[0..19].each do |post| %>
                 <div class="card">
-                    <div class="card-header"><h2><%= post.title %></h2></div>
+                    <div class="card-header">
+                        <% if is_current_session? @wizard %>
+                            <a href="/posts/<%= post.id %>/edit" class="btn btn-outline-warning btn-sm float-right">Edit</a>
+                        <% end %>
+                        <h2><%= post.title %></h2>
+                    </div>
                     <div class="card-body">
+                        <span style="color: #777;"><%= parse_timestamp post.timestamp %></span></p>
                         <p class="card-text"><%= post.content %></p>
                         
-                        <hr />
-                        <%= post.upvotes.size %> Upvote<%= 's' if post.upvotes.size != 1 %> | <a href="/posts/<%= post.id %>"><%= post.comments.size %> Comment<%= 's' if post.comments.size != 1 %></a>
+                        <form action="/posts/<%= post.id %>/upvote" method="POST">
+                            <button type="submit" class="btn btn-outline-info btn-sm" <%= 'disabled' if post.upvotes.any?{|up| up.wizard == current_wizard} %>><%= post.upvotes.size %> Upvote<%= 's' if post.upvotes.size != 1 %></button> &nbsp; 
+                            <a href="/posts/<%= post.id %>" type="button" class="btn btn-outline-primary btn-sm"><%= post.comments.size %> Comment<%= 's' if post.comments.size != 1 %></a>
+                        </form>
                     </div>
                 </div><br />
             <% end %>
