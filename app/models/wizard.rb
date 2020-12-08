@@ -21,6 +21,7 @@ class Wizard < ActiveRecord::Base
     before_destroy :destroy_associated_objects
 
     def destroy_associated_objects
+        self.posts.each{ |post| post.upvotes.destroy_all }
         self.posts.destroy_all
         self.comments.destroy_all
         self.upvotes.destroy_all

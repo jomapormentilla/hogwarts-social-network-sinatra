@@ -1,8 +1,9 @@
 <div class="row">
-
-    <div class="col-md-12">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
         <div class="alert alert-dark text-center"><h1>Wizards Directory (<%= @wizards.size %>)</h1></div>
     </div>
+    <div class="col-md-3"></div>
 
     <% if flash.has?(:message) %>
         <div class="col-md-12">
@@ -10,7 +11,8 @@
         </div>
     <% end %>
 
-    <div class="col-md-12 table-responsive">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
         <% @wizards.each do |wizard| %>
             <div class="media">
                 <a href="/wizards/<%= wizard.slug %>"><img src="<%= wizard.img_url == nil ? '/images/hogwarts-logo-300x300.png' : wizard.img_url %>" alt="profile-img" class="mr-3 py-2" style="width: 64px;" /></a>
@@ -27,11 +29,12 @@
                         <% end %>
                     <% end %>
                     <h2 class="mt-0"><a href="/wizards/<%= wizard.slug %>"><%= wizard.name %></a></h2>
-                    <p> Email: <%= wizard.email %><br />
+                    <span> Name: <%= wizard.name %><br />
+                        Email: <%= wizard.email %><br />
                         House: <a href="/houses/<%= wizard.house.slug %>"><%= wizard.house.name %></a><br />
                         Wand: <%= wizard.wand == nil ? 'None' : wizard.wand.name %><br />
                         Friends: <%= wizard.friends.size + wizard.added_friends.size %>
-                    </p>
+                    </span>
                 </div>
             </div><hr />
         <% end %>
