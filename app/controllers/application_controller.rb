@@ -74,6 +74,7 @@ class ApplicationController < Sinatra::Base
 
         flash[:message] = "Congratulations, #{ wizard_new.username.upcase } - You're a wizard!"
         flash[:alert_type] = "success"
+        flash[:new_wizard] = "#{ wizard_new.username }"
         redirect '/login'
     end
 
@@ -108,13 +109,6 @@ class ApplicationController < Sinatra::Base
         def parse_timestamp( time )
             _time = time.in_time_zone('Eastern Time (US & Canada)')
             _time.strftime("%B %d, %Y, %l:%M%P")
-        end
-
-        def redirect_to_previous_page( request_obj )
-            origin = request_obj.env["HTTP_ORIGIN"]
-            path = request_obj.env["HTTP_REFERER"].gsub(origin,"")
-
-            redirect "#{ path }"
         end
     end
 
@@ -151,7 +145,10 @@ class ApplicationController < Sinatra::Base
         end
     end
 
-    def redirect_if_wizard_not_found
-        
+    def redirect_to_previous_page( request_obj )
+        origin = request_obj.env["HTTP_ORIGIN"]
+        path = request_obj.env["HTTP_REFERER"].gsub(origin,"")
+
+        redirect "#{ path }"
     end
 end

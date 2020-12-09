@@ -4,7 +4,7 @@ class PostsController < ApplicationController
     end
 
     get '/posts/:id' do
-        @post = Post.find_by_id(params[:id])
+        @post = Post.includes(:wizard, :upvotes).find_by_id(params[:id])
         redirect_if_obj_not_found( @post )
 
         erb :'posts/show'

@@ -1,4 +1,3 @@
-
 <div class="row py-2">
     <div class="col-md-12">
         <div class="alert alert-dark text-center"><h1><%= @wizard.username.upcase %></h1></div>
@@ -11,7 +10,7 @@
 
     <div class="col-sm-6 col-md-3">
         <div class="card">
-            <div class="card-header text-center"><h2><%= @wizard.name %></h2></div>
+            <div class="card-header text-center"><h4><%= @wizard.name %></h4></div>
             <img src="<%= @wizard.img_url == nil ? '/images/hogwarts-logo-300x300.png' : @wizard.img_url %>" alt="profile" class="card-img-top p-2" />
             <div class="card-body table-responsive">
                 <table class="table table-sm">
@@ -52,7 +51,7 @@
     <div class="col-sm-6">
         <% if is_current_session? @wizard %>
             <div class="card shadow">
-                <div class="card-header"><h3>Create a New Post</h3></div>
+                <div class="card-header"><h4>Create a New Post</h4></div>
                 <div class="card-body">
                     <form action="/posts" method="POST">
                         <input type="text" name="post[title]" placeholder="Post Title..." class="form-control" /><br />
@@ -63,10 +62,10 @@
             </div><br />
         <% end %>
 
-        <% if @wizard.posts.empty? %>
+        <% if @posts.empty? %>
             <div class="alert alert-info text-center"><%= @wizard.username.upcase %> does not have any posts.</div>
         <% else %>
-            <% @wizard.posts.order(:id).reverse[0..19].each do |post| %>
+            <% @posts.each do |post| %>
                 <div class="card">
                     <div class="card-header">
                         <h2><%= post.title %></h2>
@@ -76,7 +75,7 @@
                         <p class="card-text"><%= post.content %></p>
                         
                         <form action="/posts/<%= post.id %>/upvote" method="POST">
-                            <button type="submit" class="btn btn-outline-info btn-sm" <%= 'disabled' if post.upvotes.any?{|up| up.wizard == current_wizard} %>><%= post.upvotes.size %> Upvote<%= 's' if post.upvotes.size != 1 %></button> &nbsp; 
+                            <button type="submit" class="btn btn-outline-info btn-sm" <%= 'disabled' if post.upvotes.any?{|up| up.wizard_id == session[:wizard_id] } %>><%= post.upvotes.size %> Upvote<%= 's' if post.upvotes.size != 1 %></button> &nbsp; 
                             <a href="/posts/<%= post.id %>" type="button" class="btn btn-outline-primary btn-sm"><%= post.comments.size %> Comment<%= 's' if post.comments.size != 1 %></a>
                             <% if is_current_session? @wizard %>
                                 <a href="/posts/<%= post.id %>/edit" class="btn btn-outline-warning btn-sm float-right">Edit Post</a>
@@ -91,7 +90,7 @@
 
     <div class="col-md-3">
         <div class="card">
-            <h4 class="card-header">Friends (<%= @all_friends.size %>)</h4>
+            <div class="card-header"><h4>Friends (<%= @all_friends.size %>)</h4></div>
             <div class="card-body">
                 <% if !current_wizard.friends.include?(@wizard) && !is_current_session?(@wizard) %>
                     <form action="/wizards/<%= @wizard.slug %>/add_friend" method="POST">
@@ -122,10 +121,10 @@
             <div class="card-body">
                 <ul class="list-group">
                     
-                    <% if !@wizard.posts.empty? %>
-                        <% @wizard.posts.each do |post| %>
+                    <% if !@posts.empty? %>
+                        <% @posts.each do |post| %>
                             <% post_arr = [] %>
-                            <% post.upvotes.order(:id).reverse.each do |upvote| %>
+                            <% post.upvotes.each do |upvote| %>
                                 <% post_arr << upvote.wizard %>
                             <% end %>
 
@@ -153,9 +152,9 @@
             <h4 class="card-header">Your Recent Upvotes</h4>
             <div class="card-body">
                 <ul class="list-group">
-                    <% if !@wizard.upvotes.empty? %>
-                        <% @wizard.upvotes.order(:id).reverse[0..9].each do |upvote| %>
-                            <li class="list-group-item"><a href="/posts/<%= upvote.post.id %>"><%= upvote.post.title %></a></li>
+                    <% if !@upvotes.empty? %>
+                        <% @upvotes.each do |upvote| %>
+                            <li class="list-group-item"><a href="/posts/<%= upvote.post_id %>"><%= upvote.post.title %></a></li>
                         <% end %>
                     <% else %>
                         No upvoted posts to display.

@@ -1,15 +1,19 @@
 class WizardsController < ApplicationController
     get '/wizards' do
-        @wizards = Wizard.all.order(:name)
+        @wizards = Wizard.all.order(:name).includes(:house, :wand, :friends, :added_friends)
         erb :'wizards/index'
     end
 
     get '/wizards/:slug' do
-        @wizard = Wizard.find_by_slug(params[:slug])
-
+        @wizard = Wizard.includes(:posts, :upvotes, :house, :wand).find_by_slug(params[:slug])
+        redirect_if_obj_not_found( @wizard )
+            
         @all_friends = []
         @wizard.friends.uniq.each{ |friend| @all_friends << friend }
         @wizard.added_friends.uniq.each{ |friend| @all_friends << friend }
+
+        @posts = @wizard.posts.order(timestamp: :desc).limit(20).includes(:comments, :upvotes)
+        @upvotes = Upvote.order(id: :desc).limit(10).includes(:post)
 
         erb :'wizards/show'
     end
@@ -50,7 +54,7 @@ class WizardsController < ApplicationController
             flash[:alert_type] = "danger"
             redirect_to_previous_page( request )
         end
-        
+
         if wizard == current_wizard
             flash[:message] = "Error: Attempt to unfriend yourself failed."
             flash[:alert_type] = "danger"

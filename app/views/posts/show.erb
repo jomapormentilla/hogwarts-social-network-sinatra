@@ -27,7 +27,7 @@
                 <p class="card-text"><%= @post.content %></p>
                 
                 <form action="/posts/<%= @post.id %>/upvote" method="POST">
-                    <button type="submit" class="btn btn-outline-info btn-sm" <%= 'disabled' if @post.upvotes.any?{|up| up.wizard == current_wizard} %>><%= @post.upvotes.size %> Upvote<%= 's' if @post.upvotes.size != 1 %></button> &nbsp; 
+                    <button type="submit" class="btn btn-outline-info btn-sm" <%= 'disabled' if @post.upvotes.any?{|up| up.wizard_id == session[:wizard_id]} %>><%= @post.upvotes.size %> Upvote<%= 's' if @post.upvotes.size != 1 %></button> &nbsp; 
                     <button type="button" class="btn btn-outline-primary btn-sm" disabled><%= @post.comments.size %> Comment<%= 's' if @post.comments.size != 1 %></button>
                 </form>
                 <hr />

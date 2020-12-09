@@ -6,7 +6,7 @@
             <div class="alert alert-<%= flash[:alert_type] %> text-center"><%= flash[:message] %></div>
         <% end %>
         <form action="/login" method="POST" class="py-2">
-            <input type="text" name="username" placeholder="Username" class="form-control" /><br />
+            <input type="text" name="username" placeholder="Username" class="form-control" value="<%= flash[:new_wizard] if flash.has?(:new_wizard) %>" /><br />
             <input type="password" name="password" placeholder="Password" class="form-control" /><br />
             <button type="submit" class="btn btn-info btn-block">Login</button>
         </form>
