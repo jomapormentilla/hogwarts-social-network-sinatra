@@ -41,26 +41,22 @@ class ApplicationController < Sinatra::Base
         wizard = Wizard.find_by_username(params[:wizard][:username])
         wizard_email = Wizard.find_by_email(params[:wizard][:email])
 
-        if params[:wizard].values.include?("")
-            flash[:message] = "All fields are required."
-            flash[:alert_type] = "danger"
-            redirect '/signup'
-        end
+        redirect_if_form_empty( params[:wizard] )
 
         if params[:wizard][:username].split.any?{ |char| char =~ /\W/ }
-            flash[:message] = "Username contains invalid characters."
+            flash[:message] = "Error: Username contains invalid characters."
             flash[:alert_type] = "danger"
             redirect '/signup'
         end
 
         if wizard || wizard_email
-            flash[:message] = "Username or Email is already registered."
+            flash[:message] = "Error: Username or Email is already registered."
             flash[:alert_type] = "danger"
             redirect '/signup'
         end
 
         if params[:wizard][:password] != params[:confirm]
-            flash[:message] = "Confirm Password does not match."
+            flash[:message] = "Error: Confirm Password does not match."
             flash[:alert_type] = "warning"
             redirect '/signup'
         end
@@ -84,7 +80,7 @@ class ApplicationController < Sinatra::Base
     end
 
     get '/logout' do
-        redirect_if_logged_in
+        session.clear
         redirect '/login'
     end
 
@@ -139,9 +135,9 @@ class ApplicationController < Sinatra::Base
 
     def redirect_if_obj_not_found( obj )
         if obj == nil
-            flash[:message] = "Error: Unable to find post."
-            flash[:alert_type] = "warning"
-            redirect_to_previous_page
+            flash[:message] = "Error: Page Not Found."
+            flash[:alert_type] = "danger"
+            redirect "/wizards/#{ current_wizard.slug }"
         end
     end
 

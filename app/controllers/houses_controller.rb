@@ -6,7 +6,9 @@ class HousesController < ApplicationController
     end
 
     get '/houses/:slug' do
-        @house = House.find_by_slug(params[:slug])
+        @houses = House.all
+        @house = House.includes(:wizards, :posts).find_by_slug(params[:slug])
+        @posts = @house.posts.order(timestamp: :desc).includes(:wizard, :upvotes, :comments)
         erb:'houses/show'
     end
 

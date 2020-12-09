@@ -5,14 +5,14 @@ class WizardsController < ApplicationController
     end
 
     get '/wizards/:slug' do
-        @wizard = Wizard.includes(:posts, :upvotes, :house, :wand).find_by_slug(params[:slug])
+        @wizard = Wizard.includes(:posts, :upvotes, :house, :wand, :friends, :added_friends).find_by_slug(params[:slug])
         redirect_if_obj_not_found( @wizard )
             
         @all_friends = []
-        @wizard.friends.uniq.each{ |friend| @all_friends << friend }
-        @wizard.added_friends.uniq.each{ |friend| @all_friends << friend }
+        @wizard.friends.each{ |friend| @all_friends << friend }
+        @wizard.added_friends.each{ |friend| @all_friends << friend }
 
-        @posts = @wizard.posts.order(timestamp: :desc).limit(20).includes(:comments, :upvotes)
+        @posts = @wizard.posts.order(timestamp: :desc).limit(20).includes(:comments, :upvotes, :wizard)
         @upvotes = Upvote.order(id: :desc).limit(10).includes(:post)
 
         erb :'wizards/show'
@@ -82,7 +82,15 @@ class WizardsController < ApplicationController
     end
 
     patch '/wizards/edit' do
-        new_name = "#{ params[:fname] } #{ params[:lname] }"
+        wizard = Wizard.find_by_username(params[:wizard][:username])
+
+        if wizard
+            flash[:message] = "Error: This username is already taken."
+            flash[:alert_type] = "warning"
+            redirect_to_previous_page( request )
+        end
+
+        new_name = "#{ params[:wizard][:fname] } #{ params[:wizard][:lname] }"
 
         data = {
             username: params[:wizard][:username],

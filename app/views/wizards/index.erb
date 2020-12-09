@@ -5,18 +5,16 @@
     </div>
     <div class="col-md-3"></div>
 
-    <% if flash.has?(:message) %>
-        <div class="col-md-12">
-            <div class="alert alert-<%= flash[:alert_type] %> text-center" style="font-size: 20px;"><%= flash[:message] %></div>
-        </div>
-    <% end %>
-
     <div class="col-md-3"></div>
     <div class="col-md-6">
+        <% if flash.has?(:message) %>
+            <div class="alert alert-<%= flash[:alert_type] %> text-center" style="font-size: 20px;"><%= flash[:message] %></div>
+        <% end %>
+
         <% @wizards.each do |wizard| %>
             <div class="media">
                 <a href="/wizards/<%= wizard.slug %>"><img src="<%= wizard.img_url == nil ? '/images/hogwarts-logo-300x300.png' : wizard.img_url %>" alt="profile-img" class="mr-3 py-2" style="width: 64px;" /></a>
-                <div class="media-body">
+                <div class="media-body px-2">
                     <% if wizard != current_wizard %>
                         <% if !wizard.added_friends.include?(current_wizard) %>
                             <form action="/wizards/<%= wizard.slug %>/add_friend" method="POST">
