@@ -16,6 +16,25 @@ class WizardsController < ApplicationController
 
     post '/wizards/:slug/add_friend' do
         wizard = Wizard.find_by_slug(params[:slug])
+
+        if wizard == nil
+            flash[:message] = "Error: Wizard not found."
+            flash[:alert_type] = "danger"
+            redirect_to_previous_page( request )
+        end
+
+        if wizard == current_wizard
+            flash[:message] = "Error: Attempt to add yourself to your Friends List has failed."
+            flash[:alert_type] = "danger"
+            redirect_to_previous_page( request )
+        end
+
+        if wizard.added_friends.include?(current_wizard)
+            flash[:message] = "Error: Attempt to add #{ wizard.name } failed."
+            flash[:alert_type] = "danger"
+            redirect_to_previous_page( request )
+        end
+
         current_wizard.friends << wizard
 
         flash[:message] = "You are now friends with #{ wizard.name }!"
@@ -25,6 +44,25 @@ class WizardsController < ApplicationController
 
     post '/wizards/:slug/remove_friend' do
         wizard = Wizard.find_by_slug(params[:slug])
+
+        if wizard == nil
+            flash[:message] = "Error: Wizard not found."
+            flash[:alert_type] = "danger"
+            redirect_to_previous_page( request )
+        end
+        
+        if wizard == current_wizard
+            flash[:message] = "Error: Attempt to unfriend yourself failed."
+            flash[:alert_type] = "danger"
+            redirect_to_previous_page( request )
+        end
+
+        if !current_wizard.friends.include?(wizard)
+            flash[:message] = "Error: Attempt to unfriend #{ wizard.name } failed."
+            flash[:alert_type] = "danger"
+            redirect_to_previous_page( request )
+        end
+
         current_wizard.friends.delete(wizard.id)
 
         flash[:message] = "You are no longer friends with #{ wizard.name }!"

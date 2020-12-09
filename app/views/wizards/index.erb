@@ -32,7 +32,11 @@
                     <span> Name: <%= wizard.name %><br />
                         Email: <%= wizard.email %><br />
                         House: <a href="/houses/<%= wizard.house.slug %>"><%= wizard.house.name %></a><br />
-                        Wand: <%= wizard.wand == nil ? 'None' : wizard.wand.name %><br />
+                        Wand:   <% if wizard.wand == nil %>
+                                    None
+                                <% else %>
+                                    <a href="/wands/<%= wizard.wand.slug %>"><%= wizard.wand.name %></a>
+                                <% end %><br />
                         Friends: <%= wizard.friends.size + wizard.added_friends.size %>
                     </span>
                 </div>

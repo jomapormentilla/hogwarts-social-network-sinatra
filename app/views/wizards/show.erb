@@ -128,16 +128,19 @@
                             <% post.upvotes.order(:id).reverse.each do |upvote| %>
                                 <% post_arr << upvote.wizard %>
                             <% end %>
-                            <li class="list-group-item">
-                                <p><a href="/posts/<%= post.id %>"><%= post.title %></a> received an upvote from</p>
-                                <% post_arr.each do |wizard| %>
-                                    <% if wizard == post_arr[-1] %>
-                                        <a href="/wizards/<%= wizard.slug %>"><%= wizard.name %></a>
-                                    <% else %>
-                                        <a href="/wizards/<%= wizard.slug %>"><%= wizard.name %></a>,
-                                    <% end %>
-                                <% end %><br />
-                            </li>
+
+                            <% if !post.upvotes.empty? %>
+                                <li class="list-group-item">
+                                    <p><a href="/posts/<%= post.id %>"><%= post.title %></a> received an upvote from</p>
+                                    <% post_arr.each do |wizard| %>
+                                        <% if wizard == post_arr[-1] %>
+                                            <a href="/wizards/<%= wizard.slug %>"><%= wizard.name %></a>
+                                        <% else %>
+                                            <a href="/wizards/<%= wizard.slug %>"><%= wizard.name %></a>,
+                                        <% end %>
+                                    <% end %><br />
+                                </li>
+                            <% end %>
                         <% end %>
                     <% else %>
                         No notifications to display.

@@ -1,11 +1,13 @@
 module Slugifiable
     module ClassMethods
         def find_by_slug( slug )
-            self.all.each do |song|
-                if song.slug == slug
-                    return song
+            result = []
+            self.all.each do |obj|
+                if obj.slug == slug
+                    result << obj
                 end
             end
+            result.size == 1 ? result[0] : nil
         end
     end
 

@@ -7,5 +7,6 @@ use WizardsController
 use PostsController
 use CommentsController
 use SpellsController
+use WandsController
 
 run ApplicationController

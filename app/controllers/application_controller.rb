@@ -11,11 +11,15 @@ class ApplicationController < Sinatra::Base
     end
 
     get '/' do
+        redirect '/login'
+    end
+
+    get '/login' do
         redirect_if_logged_in
         erb :index
     end
 
-    post '/' do
+    post '/login' do
         wizard = Wizard.find_by_username(params[:username])
 
         if wizard && wizard.authenticate(params[:password])
@@ -25,7 +29,7 @@ class ApplicationController < Sinatra::Base
 
         flash[:message] = "Invalid Credentials"
         flash[:alert_type] = "warning"
-        redirect '/'
+        redirect '/login'
     end
 
     get '/signup' do
@@ -39,6 +43,12 @@ class ApplicationController < Sinatra::Base
 
         if params[:wizard].values.include?("")
             flash[:message] = "All fields are required."
+            flash[:alert_type] = "danger"
+            redirect '/signup'
+        end
+
+        if params[:wizard][:username].split.any?{ |char| char =~ /\W/ }
+            flash[:message] = "Username contains invalid characters."
             flash[:alert_type] = "danger"
             redirect '/signup'
         end
@@ -64,7 +74,7 @@ class ApplicationController < Sinatra::Base
 
         flash[:message] = "Congratulations, #{ wizard_new.username.upcase } - You're a wizard!"
         flash[:alert_type] = "success"
-        redirect '/'
+        redirect '/login'
     end
 
     get '/shop' do
@@ -74,12 +84,12 @@ class ApplicationController < Sinatra::Base
 
     get '/logout' do
         redirect_if_logged_in
-        redirect '/'
+        redirect '/login'
     end
 
     post '/logout' do
         session.clear
-        redirect '/'
+        redirect '/login'
     end
 
     helpers do
@@ -122,5 +132,26 @@ class ApplicationController < Sinatra::Base
             flash[:alert_type] = "danger"
             redirect "/wizards/#{ current_wizard.slug }"
         end
+    end
+
+    def redirect_if_form_empty( params_obj )
+        if params_obj.values.include?("")
+            flash[:message] = "Error: Text field cannot be blank."
+            flash[:alert_type] = "danger"
+
+            redirect_to_previous_page( request )
+        end
+    end
+
+    def redirect_if_obj_not_found( obj )
+        if obj == nil
+            flash[:message] = "Error: Unable to find post."
+            flash[:alert_type] = "warning"
+            redirect_to_previous_page
+        end
+    end
+
+    def redirect_if_wizard_not_found
+        
     end
 end

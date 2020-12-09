@@ -1,17 +1,17 @@
 class CommentsController < ApplicationController
-    get '/' do
+    get '/comments' do
         redirect '/houses'
     end
 
-    post '/comments/:id/new' do
+    get '/comments/:id' do
+        redirect "/wizards/#{ current_wizard.slug }"
+    end
+
+    post '/comments/:id' do
         post = Post.find_by_id(params[:id])
 
-        if params.values.include?("")
-            flash[:comment_message] = "Error: Please provide content for your comment."
-            flash[:alert_type] = "warning"
-
-            redirect "/posts/#{ post.id }"
-        end
+        redirect_if_obj_not_found( post )
+        redirect_if_form_empty( params )
 
         data = {
             content: params[:content],

@@ -35,7 +35,7 @@
                 <% if flash.has?(:comment_message) %>
                     <div class="alert alert-<%= flash[:alert_type] %> text-center"><%= flash[:comment_message] %></div>
                 <% end %>
-                <form action="/comments/<%= @post.id %>/new" method="POST">
+                <form action="/comments/<%= @post.id %>" method="POST">
                     <textarea name="content" rows="5" placeholder="<%= current_wizard.username.upcase %> says..." class="form-control" /></textarea><br />
                     <button type="submit" class="btn btn-primary" />Add Comment</button>
                 </form>
@@ -90,12 +90,10 @@
                 </table>
                 <% if !current_wizard.friends.include?(@post.wizard) %>
                     <form action="/wizards/<%= @post.wizard.slug %>/add_friend" method="POST">
-                        <input type="hidden" name="friend_id" value="<%= @post.wizard.slug %>" />
                         <button type="submit" class="btn btn-block btn-outline-primary btn-sm">Add as Friend</button>
                     </form><br />
                 <% else %>
                     <form action="/wizards/<%= @post.wizard.slug %>/remove_friend" method="POST">
-                        <input type="hidden" name="friend_id" value="<%= @post.wizard.slug %>" />
                         <button type="submit" class="btn btn-block btn-outline-danger btn-sm">Unfriend</button>
                     </form><br />
                 <% end %>
