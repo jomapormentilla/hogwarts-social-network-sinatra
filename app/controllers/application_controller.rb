@@ -80,11 +80,6 @@ class ApplicationController < Sinatra::Base
         redirect '/login'
     end
 
-    get '/shop' do
-        @wands = Wand.all
-        erb :'shop/index'
-    end
-
     get '/logout' do
         session.clear
         redirect '/login'

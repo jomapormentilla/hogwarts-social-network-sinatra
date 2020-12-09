@@ -11,8 +11,4 @@ class HousesController < ApplicationController
         @posts = @house.posts.order(timestamp: :desc).includes(:wizard, :upvotes, :comments)
         erb:'houses/show'
     end
-
-    get '/houses/:slug/wizards' do
-
-    end
 end

@@ -154,15 +154,19 @@ def assign_house_faculty
         if house.name == "Gryffindor"
             wizard1 = Wizard.find_by_name("Godric Gryffindor")
             wizard2 = Wizard.find_by_name("Minerva McGonagall")
+            house.img_url = "/images/gryffindor-logo.jpg"
         elsif house.name == "Slytherin"
             wizard1 = Wizard.find_by_name("Salazar Slytherin")
             wizard2 = Wizard.find_by_name("Severus Snape")
+            house.img_url = "/images/slytherin-logo.jpg"
         elsif house.name == "Hufflepuff"
             wizard1 = Wizard.find_by_name("Helga Hufflepuff")
             wizard2 = Wizard.find_by_name("Pomona Sprout")
+            house.img_url = "/images/hufflepuff-logo.jpg"
         elsif house.name == "Ravenclaw"
             wizard1 = Wizard.find_by_name("Rowena Ravenclaw")
             wizard2 = Wizard.find_by_name("Filius Flitwick")
+            house.img_url = "/images/ravenclaw-logo.jpg"
         end
 
         wizard1.house_id = house.id

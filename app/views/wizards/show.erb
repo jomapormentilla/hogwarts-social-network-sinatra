@@ -96,7 +96,7 @@
 
     <div class="col-md-3">
         <div class="card">
-            <div class="card-header"><h4>Friends (<%= @all_friends.size %>)</h4></div>
+            <div class="card-header"><h4>Friends (<%= @all_friends.uniq.size %>)</h4></div>
             <div class="card-body">
                 <% if !current_wizard.friends.include?(@wizard) && !is_current_session?(@wizard) %>
                     <form action="/wizards/<%= @wizard.slug %>/add_friend" method="POST">
@@ -115,7 +115,7 @@
                 <% if @all_friends.empty? %>
                     No friends
                 <% else %>
-                    <% @all_friends.sort_by(&:name).each do |friend| %>
+                    <% @all_friends.uniq.sort_by(&:name).each do |friend| %>
                         <a href="/wizards/<%= friend.slug %>"><%= friend.name %></a><br />
                     <% end %>
                 <% end %>

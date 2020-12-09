@@ -8,5 +8,6 @@ use PostsController
 use CommentsController
 use SpellsController
 use WandsController
+use ShopController
 
 run ApplicationController
