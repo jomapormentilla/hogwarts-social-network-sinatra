@@ -5,7 +5,9 @@
             <div class="card-body">
                 <h4>Balance: <span class="float-right"><%= current_wizard.balance %> Sickles</span></h4>
                 <hr />
-                <h5>After Wand Trade In: <span class="float-right"><%= current_wizard.balance + (@wand.price/2) %> Sickles</span></h5>
+                <% if current_wizard.wand != nil %>
+                    <h5>After Wand Trade In: <span class="float-right"><%= current_wizard.balance + (@wand.price/2) %> Sickles</span></h5>
+                <% end %>
             </div>
         </div><br />
 
@@ -20,6 +22,9 @@
                 <div class="card-body text-center">
                     <h4><a href="/wands/<%= @wand.slug %>"><%= @wand.name %></a></h4>
                     <p>Trade In Value: <u><%= @wand.price/2 %>.00 Sickles</u></p>
+                    <form action="/wands/<%= @wand.slug %>/unequip" method="POST">
+                        <button class="btn btn-outline-info btn-block btn-sm">Trade In</button>
+                    </form>
                 </div>
             <% end %>
         </div><br />
@@ -30,7 +35,7 @@
                 <% if !current_wizard.spells.empty? %>
                     <ul class="list-group">
                         <% current_wizard.spells.each do |spell| %>
-                            <a href="/spells/<%= spell.slug %>" class="list-group-item"></a>
+                            <a href="/spells/<%= spell.slug %>" class="list-group-item"><%= spell.name %></a>
                         <% end %>
                     </ul>
                 <% else %>
@@ -66,9 +71,13 @@
                                                 <button type="submit" class="btn btn-info btn-sm btn-block">Equip</button>
                                             </form>
                                         <% else %>
-                                            <form action="/wands/<%= wand.slug %>/trade" method="POST">
-                                                <button type="submit" class="btn btn-info btn-sm btn-block">Trade</button>
-                                            </form>
+                                            <% if wand.wizard_id == nil %>
+                                                <form action="/wands/<%= wand.slug %>/trade" method="POST">
+                                                    <button class="btn btn-info btn-block btn-sm">Trade</button>
+                                                </form>
+                                            <% else %>
+                                                <button class="btn btn-warning btn-block btn-sm" disabled>Unavailable</button>
+                                            <% end %>
                                         <% end %>
                                     </div>
                                 </div>
@@ -88,17 +97,21 @@
                 <div class="card-group">
                     <div class="row">
                         <% @spells.each do |spell| %>
-                            <% if !spell.wizards.include?(current_wizard) %>
                                 <div class="card col-sm-6 col-md-3 px-0">
                                     <a href="/spells/<%= spell.slug %>"><img src="<%= spell.img_url %>" class="card-img-top" alt="spell_<%= spell.id %>"></a>
                                     <div class="card-body">
                                         <h3 class="card-title"><%= spell.name %></h3>
                                         <p class="card-text" style="color: #32a2b7; font-size: 20px;"><%= spell.price %><span style="vertical-align: super; font-size: 12px; line-height: normal;">.00</span> Sickles</p>
                                         <p><%= spell.effect %></p>
-                                        <button class="btn btn-info btn-sm btn-block">Learn Spell</button>
+                                        <% if !current_wizard.spells.include?(spell) %>
+                                            <form action="/spells/<%= spell.slug %>" method="POST">
+                                                <button type="submit" class="btn btn-info btn-sm btn-block">Learn Spell</button>
+                                            </form>
+                                        <% else %>
+                                            <button class="btn btn-dark btn-sm btn-block" disabled>Learned</button>
+                                        <% end %>
                                     </div>
                                 </div>
-                            <% end %>
                         <% end %>
                     </div>
                 </div>

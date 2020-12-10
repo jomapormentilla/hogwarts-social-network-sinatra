@@ -15,6 +15,10 @@
             <div class="card-body table-responsive">
                 <table class="table table-sm">
                     <tr>
+                        <td style="text-align: right; padding-right: 5px;">House:</td>
+                        <td><a href="/houses/<%= @wizard.house.slug %>"><%= @wizard.house.name %></a></td>
+                    <tr>
+                    <tr>
                         <td style="text-align: right; padding-right: 5px;">Username:</td>
                         <td><%= @wizard.username %></td>
                     <tr>
@@ -37,8 +41,18 @@
                         </td>
                     <tr>
                     <tr>
-                        <td style="text-align: right; padding-right: 5px;">House:</td>
-                        <td><a href="/houses/<%= @wizard.house.slug %>"><%= @wizard.house.name %></a></td>
+                        <td style="text-align: right; padding-right: 5px;">Spells:</td>
+                        <td>
+                            <% if !@wizard.spells.empty? %>
+                                <ul class="text-left">
+                                    <% @wizard.spells.each do |spell| %>
+                                        <li><a href="/spells/<%= spell.slug %>"><%= spell.name %></a></li>
+                                    <% end %>
+                                </ul>
+                            <% else %>
+                                None
+                            <% end %>
+                        </td>
                     <tr>
                 </table>
                 
@@ -137,7 +151,7 @@
                             <% if !post.upvotes.empty? %>
                                 <li class="list-group-item">
                                     <p><a href="/posts/<%= post.id %>"><%= post.title %></a> received an upvote from</p>
-                                    <% post_arr.each do |wizard| %>
+                                    <% post_arr.uniq.each do |wizard| %>
                                         <% if wizard == post_arr[-1] %>
                                             <a href="/wizards/<%= wizard.slug %>"><%= wizard.name == current_wizard.name ? 'You' : wizard.name %></a>
                                         <% else %>
@@ -159,7 +173,7 @@
             <div class="card-body">
                 <ul class="list-group">
                     <% if !@upvotes.empty? %>
-                        <% @upvotes.each do |upvote| %>
+                        <% @upvotes.uniq.each do |upvote| %>
                             <li class="list-group-item"><a href="/posts/<%= upvote.post_id %>"><%= upvote.post.title %></a></li>
                         <% end %>
                     <% else %>

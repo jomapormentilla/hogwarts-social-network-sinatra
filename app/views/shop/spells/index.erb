@@ -1,1 +1,84 @@
-<h1>Hogwarts Spells</h1>
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <div class="alert alert-dark text-center"><h1>Hogwarts Spells</h1></div>
+        <% if flash.has?(:message) %>
+            <div class="alert alert-<%= flash[:alert_type] %> text-center"><%= flash[:message] %></div>
+        <% end %>
+    </div>
+    <div class="col-md-1"></div>
+
+    <div class="col-md-1"></div>
+    <div class="col-md-3">
+        <div class="card">
+            <h2 class="card-header text-center">Wallet</h2>
+            <div class="card-body">
+                <h4>Balance: <span class="float-right"><%= current_wizard.balance %> Sickles</span></h4>
+                <hr />
+                <% if current_wizard.wand != nil %>
+                    <h5>After Wand Trade In: <span class="float-right"><%= current_wizard.balance + (current_wizard.wand.price/2) %> Sickles</span></h5>
+                <% end %>
+            </div>
+        </div><br />
+
+        <div class="card">
+            <h2 class="card-header text-center">Your Wand</h2>
+            <% if current_wizard.wand == nil %>
+                <p class="card-body text-center">
+                    Hey, <%= current_wizard.name.split[0] %>, looks like you could use a wand! Browse through our <a href="/wands">wands</a> to find the perfect one for you!
+                </p>
+            <% else %>
+                <img src="<%= @wand.img_url %>" alt="@wand.slug" />
+                <div class="card-body text-center">
+                    <h4><a href="/wands/<%= @wand.slug %>"><%= @wand.name %></a></h4>
+                    <p>Trade In Value: <u><%= @wand.price/2 %>.00 Sickles</u></p>
+                    <form action="/wands/<%= @wand.slug %>/unequip" method="POST">
+                        <button class="btn btn-outline-info btn-block btn-sm">Trade In</button>
+                    </form>
+                </div>
+            <% end %>
+        </div><br />
+
+        <div class="card">
+            <h2 class="card-header text-center">Your Spells</h2>
+            <div class="card-body text-center">
+                <% if !current_wizard.spells.empty? %>
+                    <ul class="list-group">
+                        <% current_wizard.spells.each do |spell| %>
+                            <a href="/spells/<%= spell.slug %>" class="list-group-item"><%= spell.name %></a>
+                        <% end %>
+                    </ul>
+                <% else %>
+                    You don't know any spells. Check out our <a href="/spells">spells</a> to add to your collection!
+                <% end %>
+            </div>
+        </div><br />
+    </div>
+
+    <div class="col-md-7">
+        <p>Order by: <a href="/spells?sort=price">Price</a> | <a href="/spells?sort=name">Name</a></p>
+        <% @spells.each do |spell| %>
+            <div class="card mb-3">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        <img src="<%= spell.img_url %>" class="card-img" alt<%= spell.slug %>">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h2 class="card-title"><%= spell.name %></h2>
+                            <p class="card-text" style="color: #32a2b7; font-size: 20px;"><%= spell.price %><span style="vertical-align: super; font-size: 12px; line-height: normal;">.00</span> Sickles</p>
+                            <p>Hey, Steve! Looks like you could use a spell! Browse through our spells to find the perfect one for you!</p>
+                            <% if !current_wizard.spells.include?(spell) %>
+                                <form action="/spells/<%= spell.slug %>" method="POST">
+                                    <button type="submit" class="btn btn-info btn-sm btn-block">Learn Spell</button>
+                                </form>
+                            <% else %>
+                                <button class="btn btn-dark btn-block btn-sm" disabled>Learned</button>
+                            <% end %>
+                        </div>
+                    </div>
+                </div>
+            </div><br />
+        <% end %>
+    </div>
+</div>

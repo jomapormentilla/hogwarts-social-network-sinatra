@@ -1,7 +1,17 @@
 class WandsController < ApplicationController
     
     get '/wands' do
-        @wands = Wand.all.includes(:wizard).order(price: :asc)
+        sort_by = "name"
+        
+        if params[:sort] == 'price'
+            sort_by = "price"
+        elsif params[:sort] == 'name'
+            sort_by = "name"
+        end
+
+        @wands = Wand.all.includes(:wizard).order(sort_by.to_sym => 'asc')
+        @wand = current_wizard.wand
+        
         erb :'shop/wands/index'
     end
 
@@ -53,6 +63,21 @@ class WandsController < ApplicationController
             flash[:alert_type] = "danger"
         end
 
+        redirect_to_previous_page( request )
+    end
+
+    post '/wands/:slug/unequip' do
+        wand = Wand.find_by_slug(params[:slug])
+        redirect_if_obj_not_found( wand )
+        
+        new_balance = current_wizard.balance + (wand.price/2)
+
+        wand.update(wizard_id: nil)
+        current_wizard.reload
+        current_wizard.update(balance: new_balance)
+
+        flash[:message] = "Sucessfully sold #{ wand.name }. You no longer own a wand."
+        flash[:alert_type] = "success"
         redirect_to_previous_page( request )
     end
 end
