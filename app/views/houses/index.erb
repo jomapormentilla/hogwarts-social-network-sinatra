@@ -17,7 +17,7 @@
             <% @houses.each do |house| %>
                 <div class="col-sm-6 col-md-12">
                     <div class="card">
-                        <div class="card-header"><h2><a href="/houses/<%= house.slug %>"><%= house.name %></a></h2></div>
+                        <div class="card-header text-center"><h2><a href="/houses/<%= house.slug %>"><%= house.name %></a></h2></div>
                         <a href="/houses/<%= house.slug %>" class="align-self-center"><img src="<%= house.img_url %>" alt="house-logo" /></a>
                         <div class="card-body table-responsive">
                             <table class="table table-sm">
@@ -57,7 +57,7 @@
                                 <span style="color: #777;"><%= parse_timestamp post.timestamp %></span></p>
                             <p class="mt-0"><%= post.content %></p>
                             <form action="/posts/<%= post.id %>/upvote" method="POST">
-                                <button type="submit" class="btn btn-outline-info btn-sm" <%= 'disabled' if post.upvotes.any?{|up| up.wizard_id == session[:wizard_id] } %>><%= post.upvotes.size %> Upvote<%= 's' if post.upvotes.size != 1 %></button> &nbsp; 
+                                <button type="submit" class="btn btn-outline-info btn-sm" <%= 'disabled' if post.upvotes.any?{ |up| up.wizard_id == session[:wizard_id] } %>><%= post.upvotes.size %> Upvote<%= 's' if post.upvotes.size != 1 %></button> &nbsp; 
                                 <a href="/posts/<%= post.id %>" class="btn btn-outline-primary btn-sm"><%= post.comments.size %> Comment<%= 's' if post.comments.size != 1 %></a>
                             </form>
                         </div>

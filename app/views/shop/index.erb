@@ -1,62 +1,106 @@
 <div class="row">
-    <div class="col-md-3 sticky-top">
+    <div class="col-md-3">
         <div class="card">
-            <h2 class="card-header text-center">Cart</h2>
+            <h2 class="card-header text-center">Wallet</h2>
             <div class="card-body">
-                Balance: <span class="float-right"><%= current_wizard.balance %> Sickles</span>
+                <h4>Balance: <span class="float-right"><%= current_wizard.balance %> Sickles</span></h4>
                 <hr />
-                <% if current_wizard.wand == nil %>
-                    <div class="alert alert-primary text-center">
-                        Hey, <%= current_wizard.name.split[0] %>! Looks like you could use a wand! Browse through our wands to find the perfect one for you!
-                    </div>
+                <h5>After Wand Trade In: <span class="float-right"><%= current_wizard.balance + (@wand.price/2) %> Sickles</span></h5>
+            </div>
+        </div><br />
+
+        <div class="card">
+            <h2 class="card-header text-center">Your Wand</h2>
+            <% if current_wizard.wand == nil %>
+                <p class="card-body text-center">
+                    Hey, <%= current_wizard.name.split[0] %>, looks like you could use a wand! Browse through our <a href="/wands">wands</a> to find the perfect one for you!
+                </p>
+            <% else %>
+                <img src="<%= @wand.img_url %>" alt="@wand.slug" />
+                <div class="card-body text-center">
+                    <h4><a href="/wands/<%= @wand.slug %>"><%= @wand.name %></a></h4>
+                    <p>Trade In Value: <u><%= @wand.price/2 %>.00 Sickles</u></p>
+                </div>
+            <% end %>
+        </div><br />
+
+        <div class="card">
+            <h2 class="card-header text-center">Your Spells</h2>
+            <div class="card-body text-center">
+                <% if !current_wizard.spells.empty? %>
+                    <ul class="list-group">
+                        <% current_wizard.spells.each do |spell| %>
+                            <a href="/spells/<%= spell.slug %>" class="list-group-item"></a>
+                        <% end %>
+                    </ul>
+                <% else %>
+                    You don't know any spells. Check out our <a href="/spells">spells</a> to add to your collection!
                 <% end %>
             </div>
         </div><br />
     </div>
 
     <div class="col-md-9">
+        <% if flash.has?(:message) %>
+            <div class="alert alert-<%= flash[:alert_type] %> text-center"><%= flash[:message] %></div>
+        <% end %>
+
         <div class="card">
             <div class="card-header">
-                <a href="" class="float-right">Browse All Wands >></a>
-                <h2>Wands</h2>
+                <a href="/wands" class="float-right">Browse All Wands >></a>
+                <h2>Latest Wands</h2>
             </div>
             <div class="card-body">
                 <div class="card-group">
-
-                <% 4.times do %>
-                    <% wand = Wand.all.sample %>
-                    <div class="card" style="width: 18rem;">
-                        <img src="<%= wand.img_url %>" class="card-img-top" alt="wand_<%= wand.id %>">
-                        <div class="card-body">
-                            <h3 class="card-title"><%= wand.name %></h3>
-                            <p class="card-text" style="color: #32a2b7; font-size: 20px;"><%= wand.price %><span style="vertical-align: super; font-size: 12px; line-height: normal;">.00</span> Sickles</p>
-                            <span>Hey, Steve! Looks like you could use a wand! Browse through our wands to find the perfect one for you!</span>
-                        </div>
+                    <div class="row">
+                        <% @wands.each do |wand| %>
+                            <% if wand.wizard_id == nil %>
+                                <div class="card col-sm-6 col-md-3 px-0">
+                                    <a href="/wands/<%= wand.slug %>"><img src="<%= wand.img_url %>" class="card-img-top" alt="wand_<%= wand.id %>"></a>
+                                    <div class="card-body">
+                                        <h3 class="card-title"><%= wand.name %></h3>
+                                        <p class="card-text" style="color: #32a2b7; font-size: 20px;"><%= wand.price %><span style="vertical-align: super; font-size: 12px; line-height: normal;">.00</span> Sickles</p>
+                                        <p>Hey, Steve! Looks like you could use a wand! Browse through our wands to find the perfect one for you!</p>
+                                        <% if current_wizard.wand == nil %>
+                                            <form action="/wands/<%= wand.slug %>" method="POST">
+                                                <button type="submit" class="btn btn-info btn-sm btn-block">Equip</button>
+                                            </form>
+                                        <% else %>
+                                            <form action="/wands/<%= wand.slug %>/trade" method="POST">
+                                                <button type="submit" class="btn btn-info btn-sm btn-block">Trade</button>
+                                            </form>
+                                        <% end %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        <% end %>
                     </div>
-                <% end %>
                 </div>
             </div>
         </div><br />
 
         <div class="card">
             <div class="card-header">
-                <a href="" class="float-right">Browse All Spells >></a>
-                <h2>Spells</h2>
+                <a href="/spells" class="float-right">Browse All Spells >></a>
+                <h2>Latest Spells</h2>
             </div>
             <div class="card-body">
                 <div class="card-group">
-
-                <% 4.times do %>
-                    <% wand = Wand.all.sample %>
-                    <div class="card" style="width: 18rem;">
-                        <img src="<%= wand.img_url %>" class="card-img-top" alt="wand_<%= wand.id %>">
-                        <div class="card-body">
-                            <h3 class="card-title"><%= wand.name %></h3>
-                            <p class="card-text" style="color: #32a2b7; font-size: 20px;"><%= wand.price %><span style="vertical-align: super; font-size: 12px; line-height: normal;">.00</span> Sickles</p>
-                            <span>Hey, Steve! Looks like you could use a wand! Browse through our wands to find the perfect one for you!</span>
-                        </div>
+                    <div class="row">
+                        <% @spells.each do |spell| %>
+                            <% if !spell.wizards.include?(current_wizard) %>
+                                <div class="card col-sm-6 col-md-3 px-0">
+                                    <a href="/spells/<%= spell.slug %>"><img src="<%= spell.img_url %>" class="card-img-top" alt="spell_<%= spell.id %>"></a>
+                                    <div class="card-body">
+                                        <h3 class="card-title"><%= spell.name %></h3>
+                                        <p class="card-text" style="color: #32a2b7; font-size: 20px;"><%= spell.price %><span style="vertical-align: super; font-size: 12px; line-height: normal;">.00</span> Sickles</p>
+                                        <p><%= spell.effect %></p>
+                                        <button class="btn btn-info btn-sm btn-block">Learn Spell</button>
+                                    </div>
+                                </div>
+                            <% end %>
+                        <% end %>
                     </div>
-                <% end %>
                 </div>
             </div>
         </div>

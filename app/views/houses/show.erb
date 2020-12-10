@@ -33,23 +33,48 @@
     
     <div class="col-md-3">
         <div class="card">
-            <h4 class="card-header"><%= @house.name %> Wizards (<%= @house.wizards.size %>)</h4>
+            <h4 class="card-header text-center">Welcome to <%= @house.name %></h4>
+            <img src="<%= @house.img_url %>" alt="@house.slug" class="align-self-center" />
             <div class="card-body">
-                <ul>
-                    <% @house.wizards.each do |wizard| %>
-                        <li><a href="/wizards/<%= wizard.slug %>"><%= wizard.username %></a></li>
+                <table class="table table-sm">
+                    <tr>
+                        <td style="text-align: right; padding-right: 5px;">Mascot:</td>
+                        <td><%= @house.mascot %></td>
+                    <tr>
+                    <tr>
+                        <td style="text-align: right; padding-right: 5px;">Founder:</td>
+                        <td><a href="/wizards/<%= @house.founder.slug %>"><%= @house.founder.name %></a></td>
+                    <tr>
+                    <tr>
+                        <td style="text-align: right; padding-right: 5px;">Head Master:</td>
+                        <td><a href="/wizards/<%= @house.head_master.slug %>"><%= @house.head_master.name %></a></td>
+                    <tr>
+                    <tr>
+                        <td style="text-align: right; padding-right: 5px;">No. Wizards:</td>
+                        <td><%= @house.wizards.size %></td>
+                    <tr>
+                </table>
+            </div>
+        </div><br />
+
+        <div class="card">
+            <h4 class="card-header text-center">Wizards</h4>
+            <div class="card-body">
+                <ul class="list-group">
+                    <% @wizards.each do |wizard| %>
+                        <a href="/wizards/<%= wizard.slug %>" title="<%= wizard.username %>" class="list-group-item"><%= wizard.name %></a>
                     <% end %>
                 </ul>
             </div>
         </div><br />
 
         <div class="card">
-            <h4 class="card-header">Other Houses</h4>
+            <h4 class="card-header text-center">Other Houses</h4>
             <div class="card-body">
-                <ul>
+                <ul class="list-group">
                     <% @houses.each do |house| %>
                         <% if house.id != @house.id %>
-                            <li><a href="/houses/<%= house.slug %>"><%= house.name %></a></li>
+                            <a href="/houses/<%= house.slug %>" class="list-group-item"><%= house.name %></a>
                         <% end %>
                     <% end %>
                 </ul>

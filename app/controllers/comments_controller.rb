@@ -1,4 +1,5 @@
 class CommentsController < ApplicationController
+    
     get '/comments' do
         redirect '/houses'
     end
@@ -33,4 +34,5 @@ class CommentsController < ApplicationController
 
         redirect_to_previous_page( request )
     end
+    
 end

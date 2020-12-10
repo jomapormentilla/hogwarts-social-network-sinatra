@@ -139,9 +139,9 @@
                                     <p><a href="/posts/<%= post.id %>"><%= post.title %></a> received an upvote from</p>
                                     <% post_arr.each do |wizard| %>
                                         <% if wizard == post_arr[-1] %>
-                                            <a href="/wizards/<%= wizard.slug %>"><%= wizard.name %></a>
+                                            <a href="/wizards/<%= wizard.slug %>"><%= wizard.name == current_wizard.name ? 'You' : wizard.name %></a>
                                         <% else %>
-                                            <a href="/wizards/<%= wizard.slug %>"><%= wizard.name %></a>,
+                                            <a href="/wizards/<%= wizard.slug %>"><%= wizard.name == current_wizard.name ? 'You' : wizard.name %></a>,
                                         <% end %>
                                     <% end %><br />
                                 </li>
@@ -155,11 +155,11 @@
         </div><br />
 
         <div class="card">
-            <h4 class="card-header">Your Recent Upvotes</h4>
+            <h4 class="card-header">Recent Upvotes</h4>
             <div class="card-body">
                 <ul class="list-group">
                     <% if !@upvotes.empty? %>
-                        <% @upvotes.includes(:post).each do |upvote| %>
+                        <% @upvotes.each do |upvote| %>
                             <li class="list-group-item"><a href="/posts/<%= upvote.post_id %>"><%= upvote.post.title %></a></li>
                         <% end %>
                     <% else %>

@@ -1,4 +1,5 @@
 class WizardsController < ApplicationController
+   
     get '/wizards' do
         @wizards = Wizard.all.order(:name).includes(:house, :wand, :friends, :added_friends)
         erb :'wizards/index'
@@ -13,7 +14,7 @@ class WizardsController < ApplicationController
         @wizard.added_friends.each{ |friend| @all_friends << friend }
 
         @posts = @wizard.posts.order(timestamp: :desc).limit(20).includes(:comments, :upvotes, :wizard)
-        @upvotes = Upvote.order(id: :desc).limit(10).includes(:post)
+        @upvotes = @wizard.upvotes.order(id: :desc).limit(10).includes(:post)
 
         erb :'wizards/show'
     end
@@ -124,4 +125,5 @@ class WizardsController < ApplicationController
     def is_head_master?( wizard )
         wizard.house.head_master == wizard
     end
+    
 end

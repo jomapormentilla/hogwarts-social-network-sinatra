@@ -1,4 +1,5 @@
 class PostsController < ApplicationController
+   
     get '/posts' do
         redirect '/houses'
     end
@@ -74,4 +75,5 @@ class PostsController < ApplicationController
         flash[:alert_type] = "info"
         redirect "/wizards/#{ current_wizard.slug }"
     end
+    
 end
