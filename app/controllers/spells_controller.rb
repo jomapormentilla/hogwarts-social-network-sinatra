@@ -1,18 +1,10 @@
 class SpellsController < ApplicationController
     
     get '/spells' do
-        
-        sort_by = "name"
-        if params[:sort] == 'price'
-            sort_by = "price"
-        elsif params[:sort] == 'name'
-            sort_by = "name"
-        end
-
         if params[:search_term]
             if params[:type] == 'name'
-                @spells = Spell.all.includes(:wizards).order(sort_by.to_sym => 'asc').where("#{ params[:type] } like ?", "%#{ params[:search_term] }%")
-                flash[:message] = "#{ @spells.size } spells Found."
+                @spells = Spell.all.includes(:wizards).order(:name => 'asc').where("#{ params[:type] } like ?", "%#{ params[:search_term] }%")
+                flash[:message] = "#{ @spells.size } Spell#{ @spells.size != 1 ? 's' : nil} Found."
                 flash[:alert_type] = "success"
             elsif params[:type] == 'price'
                 @spells = Spell.all.includes(:wizards).order(price: :desc).where("#{ params[:type] } < ?", "#{ params[:search_term] }")
@@ -26,7 +18,7 @@ class SpellsController < ApplicationController
                 redirect "/spells"
             end
         else
-            @spells = Spell.all.includes(:wizards).order(sort_by.to_sym => 'asc')
+            @spells = Spell.all.includes(:wizards).order(:name => 'asc')
         end
 
         @wand = current_wizard.wand
@@ -37,6 +29,8 @@ class SpellsController < ApplicationController
     get '/spells/:slug' do
         @spell = Spell.find_by_slug(params[:slug])
         redirect_if_obj_not_found( @spell )
+
+        @wand = current_wizard.wand
 
         erb :'shop/spells/show'
     end
@@ -55,13 +49,11 @@ class SpellsController < ApplicationController
             flash[:alert_type] = "success"
         else
             flash[:message] = "You do not have enough funds to learn this spell."
-            flash[:alert_type] = "warning"
+            flash[:alert_type] = "danger"
+
+            redirect "/spells"
         end
 
         redirect_to_previous_page( request )
-    end
-
-    get '/spells/:slug/edit' do
-
     end
 end

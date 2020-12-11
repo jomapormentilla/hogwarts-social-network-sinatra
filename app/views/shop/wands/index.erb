@@ -25,10 +25,10 @@
             <h2 class="card-header text-center">Your Wand</h2>
             <% if current_wizard.wand == nil %>
                 <p class="card-body text-center">
-                    Hey, <%= current_wizard.name.split[0] %>, looks like you could use a wand! Browse through our <a href="/wands">wands</a> to find the perfect one for you!
+                    At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.
                 </p>
             <% else %>
-                <img src="<%= @wand.img_url %>" alt="@wand.slug" />
+                <a href="/wands/<%= @wand.slug %>"><img src="<%= @wand.img_url %>" alt="@wand.slug" /></a>
                 <div class="card-body text-center">
                     <h4><a href="/wands/<%= @wand.slug %>"><%= @wand.name %></a></h4>
                     <p>Trade In Value: <u><%= @wand.price/2 %>.00 Sickles</u></p>
@@ -51,18 +51,18 @@
                 <button type="submit" class="input-group-append btn btn-info">Seach</button>
             </div>
         </form><br />
-        
+
         <% @wands.each do |wand| %>
             <div class="card mb-3">
                 <div class="row no-gutters">
                     <div class="col-md-4">
-                        <img src="<%= wand.img_url %>" class="card-img" alt<%= wand.slug %>">
+                        <a href="/wands/<%= wand.slug %>"><img src="<%= wand.img_url %>" class="card-img" alt<%= wand.slug %>"></a>
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
                             <h2 class="card-title"><%= wand.name %></h2>
                             <p class="card-text" style="color: #32a2b7; font-size: 20px;"><%= wand.price %><span style="vertical-align: super; font-size: 12px; line-height: normal;">.00</span> Sickles</p>
-                            <p>Hey, Steve! Looks like you could use a wand! Browse through our wands to find the perfect one for you!</p>
+                            <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>
                             <% if current_wizard.wand == nil %>
                                 <form action="/wands/<%= wand.slug %>" method="POST">
                                     <button type="submit" class="btn btn-info btn-sm btn-block">Equip</button>

@@ -4,7 +4,7 @@ class WandsController < ApplicationController
         if params[:search_term]
             if params[:type] == 'name'
                 @wands = Wand.all.includes(:wizard).order(:name => 'asc').where("#{ params[:type] } like ?", "%#{ params[:search_term] }%")
-                flash[:message] = "#{ @wands.size } Wands Found."
+                flash[:message] = "#{ @wands.size } Wand#{ @wands.size != 1 ? 's' : nil} Found."
                 flash[:alert_type] = "success"
             elsif params[:type] == 'price'
                 @wands = Wand.all.includes(:wizard).order(price: :desc).where("#{ params[:type] } < ?", "#{ params[:search_term] }")
@@ -40,6 +40,7 @@ class WandsController < ApplicationController
         if new_balance > 0
             current_wizard.update(balance: new_balance)
             wand.update(wizard_id: current_wizard.id)
+            
             flash[:message] = "You are now the proud owner of <b>#{ wand.name }</b>"
             flash[:alert_type] = "success"
         else

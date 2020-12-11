@@ -1,3 +1,64 @@
-<h1><%= @wand.name %></h1>
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-3">
+        <div class="card">
+            <h2 class="card-header text-center">Wallet</h2>
+            <div class="card-body">
+                <h4>Balance: <span class="float-right"><%= current_wizard.balance %> Sickles</span></h4>
+                <hr />
+                <% if current_wizard.wand != nil %>
+                    <h5>After Wand Trade In: <span class="float-right"><%= current_wizard.balance + (current_wizard.wand.price/2) %> Sickles</span></h5>
+                <% end %>
+            </div>
+        </div><br />
 
-<p><%= @wand.wizard == nil ? 'Not Owned' : @wand.wizard.name %></p>
+        <div class="card">
+            <h2 class="card-header text-center">Your Wand</h2>
+            <% if current_wizard.wand == nil %>
+                <p class="card-body text-center">
+                    Hey, <%= current_wizard.name.split[0] %>, looks like you could use a wand! Browse through our <a href="/wands">wands</a> to find the perfect one for you!
+                </p>
+            <% else %>
+                <img src="<%= current_wizard.wand.img_url %>" alt="current_wizard.wand.slug" />
+                <div class="card-body text-center">
+                    <h4><a href="/wands/<%= current_wizard.wand.slug %>"><%= current_wizard.wand.name %></a></h4>
+                    <p>Trade In Value: <u><%= current_wizard.wand.price/2 %>.00 Sickles</u></p>
+                    <form action="/wands/<%= current_wizard.wand.slug %>/unequip" method="POST">
+                        <button class="btn btn-outline-info btn-block btn-sm">Trade In</button>
+                    </form>
+                </div>
+            <% end %>
+        </div><br />
+    </div>
+
+    <div class="col-md-7">
+        <div class="card p-2">
+            <div class="row">
+                <div class="col-md-4">
+                    <img src="<%= @wand.img_url %>" class="card-img" alt<%= @wand.slug %>">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h1 class="card-title"><%= @wand.name %></h1></h1>
+                        <p class="card-text" style="color: #32a2b7; font-size: 20px;"><%= @wand.price %><span style="vertical-align: super; font-size: 12px; line-height: normal;">.00</span> Sickles</p>
+                        <p class="card-text">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>
+                        <% if current_wizard.wand == nil %>
+                            <form action="/wands/<%= @wand.slug %>" method="POST">
+                                <button type="submit" class="btn btn-info btn-sm btn-block">Equip</button>
+                            </form>
+                        <% else %>
+                            <% if @wand.wizard_id == nil %>
+                                <form action="/wands/<%= @wand.slug %>/trade" method="POST">
+                                    <button class="btn btn-info btn-block btn-sm">Trade</button>
+                                </form>
+                            <% else %>
+                                <button class="btn btn-warning btn-block btn-sm" disabled>Unavailable</button><br />
+                                <span class="float-right">Owned By: <a href="/wizards/<%= @wand.wizard.slug %>"><%= @wand.wizard.name %></a></span>
+                            <% end %>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+        </div><br />
+    </div>
+</div>
