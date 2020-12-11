@@ -90,6 +90,27 @@ class ApplicationController < Sinatra::Base
         redirect '/login'
     end
 
+    get '/search' do
+        if params[:q]
+            @houses = House.all.where("name like ?", "%#{ params[:q ]}%").includes(:wizard, :founder, :head_master)
+            @wizards = Wizard.all.order(:name).where("name like ? or username like ?", "%#{ params[:q ]}%", "%#{ params[:q ]}%").includes(:friends, :added_friends, :wand, :house)
+            @wands = Wand.all.where("name like ?", "%#{ params[:q ]}%").includes(:wizard)
+            @spells = Spell.all.where("name like ?", "%#{ params[:q ]}%").includes(:wizards)
+
+            @count = @wizards.size + @houses.size + @wands.size + @spells.size
+        end
+
+        if @count == 0
+            flash[:message] = "No results found."
+            flash[:alert_type] = "danger"
+        else
+            flash[:message] = "#{ @count } result#{ 's' if @count != 1 } found."
+            flash[:alert_type] = "info"
+        end
+
+        erb :search
+    end
+
     helpers do
         def current_wizard
             @current_wizard ||= Wizard.find(session[:wizard_id]) if session[:wizard_id]
