@@ -95,8 +95,8 @@ class WizardsController < ApplicationController
     patch '/wizards/edit' do
         wizard = Wizard.find_by_username(params[:wizard][:username])
 
-        if wizard
-            flash[:message] = "Error: This username is already taken."
+        if wizard && wizard.username != current_wizard.username
+            flash[:message] = "Error: The username <b>#{ params[:wizard][:username] }</b> is already taken."
             flash[:alert_type] = "warning"
             redirect_to_previous_page( request )
         end
@@ -111,6 +111,8 @@ class WizardsController < ApplicationController
 
         current_wizard.update(data)
 
+        flash[:message] = "Successfully updated your profile."
+        flash[:alert_type] = "success"
         redirect "/wizards/#{ current_wizard.slug }"
     end
 

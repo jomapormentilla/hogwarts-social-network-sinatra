@@ -5,7 +5,7 @@
             <div class="alert alert-<%= flash[:alert_type] %> text-center"><%= flash[:message] %></div>
         <% end %>
         <div class="alert alert-dark text-center">
-            <h2>Welcome to Hogwarts</h2>
+            <h1>Welcome to Hogwarts</h1>
             <span>School of Witchcraft & Wizardry</span>
         </div>
     </div>
@@ -50,7 +50,7 @@
             <div class="card-body">
                 <% @posts.each do |post| %>
                     <div class="media">
-                        <a href="/wizards/<%= post.wizard.slug %>"><img src="<%= post.wizard.img_url == nil ? '/images/hogwarts-logo-300x300.png' : post.wizard.img_url %>" alt="profile" style="width: 64px;" class="align-self-start mr-3 py-1" /></a>
+                        <a href="/wizards/<%= post.wizard.slug %>"><img src="<%= post.wizard.img_url == nil ? post.wizard.house.img_url : post.wizard.img_url %>" alt="profile" style="width: 64px;" class="align-self-start mr-3 py-1" /></a>
                         <div class="media-body">
                             <h4 class="mt-0"><%= post.title %></h4>
                             <p>By: <a href="/wizards/<%= post.wizard.slug %>"><%= post.wizard.username %></a><br />

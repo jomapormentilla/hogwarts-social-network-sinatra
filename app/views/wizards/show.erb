@@ -140,8 +140,7 @@
             <h4 class="card-header">Notifications</h4>
             <div class="card-body">
                 <ul class="list-group">
-                    
-                    <% if !@posts.empty? %>
+
                         <% @posts.each do |post| %>
                             <% post_arr = [] %>
                             <% post.upvotes.includes(:wizard).each do |upvote| %>
@@ -159,11 +158,11 @@
                                         <% end %>
                                     <% end %><br />
                                 </li>
+                            <% else %>
+                                No notifications to display
                             <% end %>
                         <% end %>
-                    <% else %>
-                        No notifications to display.
-                    <% end %>
+                    
                 </ul>
             </div>
         </div><br />

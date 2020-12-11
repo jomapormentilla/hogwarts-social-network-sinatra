@@ -49,12 +49,6 @@ class ApplicationController < Sinatra::Base
             redirect '/signup'
         end
 
-        # if valid_email_regex?(params[:wizard][:email])
-        #     flash[:message] = "Error: Email Address <b>#{ params[:wizard][:email] }</b> contains invalid characters."
-        #     flash[:alert_type] = "danger"
-        #     redirect '/signup'
-        # end
-
         if wizard || wizard_email
             flash[:message] = "Error: Username or Email is already registered."
             flash[:alert_type] = "danger"
@@ -74,7 +68,7 @@ class ApplicationController < Sinatra::Base
         wizard_new.balance = 1000
         wizard_new.save
 
-        flash[:message] = "Congratulations, #{ wizard_new.username.upcase } - You're a wizard!"
+        flash[:message] = "Congratulations, #{ wizard_new.username.upcase } - You're a wizard!<br />You have been sorted in <strong>House #{ wizard_new.house.name }</strong>."
         flash[:alert_type] = "success"
         flash[:new_wizard] = "#{ wizard_new.username }"
         redirect '/login'
@@ -111,6 +105,11 @@ class ApplicationController < Sinatra::Base
         erb :search
     end
 
+    not_found do
+        status 404
+        erb :error
+    end
+
     helpers do
         def current_wizard
             @current_wizard ||= Wizard.find(session[:wizard_id]) if session[:wizard_id]
@@ -127,11 +126,6 @@ class ApplicationController < Sinatra::Base
         def parse_timestamp( time )
             _time = time.in_time_zone('Eastern Time (US & Canada)')
             _time.strftime("%B %d, %Y, %l:%M%P")
-        end
-
-        def valid_email_regex?( string )
-            # General Email Regex (RFC 5322 Official Standard)
-            string.match(/(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/)
         end
     end
 

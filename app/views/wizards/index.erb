@@ -24,7 +24,7 @@
 
         <% @wizards.each do |wizard| %>
             <div class="media p-3 shadow bg-light">
-                <a href="/wizards/<%= wizard.slug %>"><img src="<%= wizard.img_url == nil ? '/images/hogwarts-logo-300x300.png' : wizard.img_url %>" alt="profile-img" class="mr-3 py-2" style="width: 64px;" /></a>
+                <a href="/wizards/<%= wizard.slug %>"><img src="<%= wizard.img_url == nil ? wizard.house.img_url : wizard.img_url %>" alt="profile-img" class="mr-3 py-2" style="width: 64px;" /></a>
                 <div class="media-body px-2">
                     <% if wizard != current_wizard %>
                         <% if !wizard.added_friends.include?(current_wizard) %>

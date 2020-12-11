@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-10">
-        <div class="alert alert-dark text-center"><h1>Hogwarts Wands</h1></div>
+        <div class="alert alert-dark text-center"><h1>Hogwarts Wands (<%= @wands.size %>)</h1></div>
         <% if flash.has?(:message) %>
             <div class="alert alert-<%= flash[:alert_type] %> text-center"><%= flash[:message] %></div>
         <% end %>
@@ -25,7 +25,7 @@
             <h2 class="card-header text-center">Your Wand</h2>
             <% if current_wizard.wand == nil %>
                 <p class="card-body text-center">
-                    At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.
+                Hey, <%= current_wizard.name.split[0] %>, looks like you could use a wand! Browse through our <a href="/wands">wands</a> to find the perfect one for you!
                 </p>
             <% else %>
                 <a href="/wands/<%= @wand.slug %>"><img src="<%= @wand.img_url %>" alt="@wand.slug" /></a>
@@ -37,6 +37,21 @@
                     </form>
                 </div>
             <% end %>
+        </div><br />
+
+        <div class="card">
+            <h2 class="card-header text-center">Your Spells</h2>
+            <div class="card-body text-center">
+                <% if !current_wizard.spells.empty? %>
+                    <ul class="list-group">
+                        <% current_wizard.spells.each do |spell| %>
+                            <a href="/spells/<%= spell.slug %>" class="list-group-item"><%= spell.name %></a>
+                        <% end %>
+                    </ul>
+                <% else %>
+                    You don't know any spells. Check out our <a href="/spells">spells</a> to add to your collection!
+                <% end %>
+            </div>
         </div><br />
     </div>
 

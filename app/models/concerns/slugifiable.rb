@@ -1,7 +1,7 @@
 module Slugifiable
     module ClassMethods
         def find_by_slug( slug )
-            result = self.all.detect{ |obj| obj.slug == slug }
+            self.all.detect{ |obj| obj.slug == slug }
         end
     end
 
