@@ -1,15 +1,34 @@
 class SpellsController < ApplicationController
     
     get '/spells' do
-        sort_by = "name"
         
+        sort_by = "name"
         if params[:sort] == 'price'
             sort_by = "price"
         elsif params[:sort] == 'name'
             sort_by = "name"
         end
 
-        @spells = Spell.all.includes(:wizards).order(sort_by.to_sym => 'asc')
+        if params[:search_term]
+            if params[:type] == 'name'
+                @spells = Spell.all.includes(:wizards).order(sort_by.to_sym => 'asc').where("#{ params[:type] } like ?", "%#{ params[:search_term] }%")
+                flash[:message] = "#{ @spells.size } spells Found."
+                flash[:alert_type] = "success"
+            elsif params[:type] == 'price'
+                @spells = Spell.all.includes(:wizards).order(price: :desc).where("#{ params[:type] } < ?", "#{ params[:search_term] }")
+                flash[:message] = "Found #{ @spells.size } spells under #{ params[:search_term] } Sickles."
+                flash[:alert_type] = "success"
+            end
+            
+            if @spells == []
+                flash[:message] = "No spells found."
+                flash[:alert_type] = "danger"
+                redirect "/spells"
+            end
+        else
+            @spells = Spell.all.includes(:wizards).order(sort_by.to_sym => 'asc')
+        end
+
         @wand = current_wizard.wand
 
         erb :'shop/spells/index'

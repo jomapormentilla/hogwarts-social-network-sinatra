@@ -41,7 +41,17 @@
     </div>
 
     <div class="col-md-7">
-        <p>Order by: <a href="/wands?sort=price">Price</a> | <a href="/wands?sort=name">Name</a></p>
+        <form action="/wands" method="GET">
+            <div class="input-group">
+                <select class="input-group-prepend btn btn-light" name="type">
+                    <option value="name" selected>Name</option>
+                    <option value="price">Price</option>
+                </select>
+                <input type="text" name="search_term" placeholder="Search Wands..." class="form-control" />
+                <button type="submit" class="input-group-append btn btn-info">Seach</button>
+            </div>
+        </form><br />
+        
         <% @wands.each do |wand| %>
             <div class="card mb-3">
                 <div class="row no-gutters">

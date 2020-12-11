@@ -1,15 +1,26 @@
 class WandsController < ApplicationController
     
     get '/wands' do
-        sort_by = "name"
-        
-        if params[:sort] == 'price'
-            sort_by = "price"
-        elsif params[:sort] == 'name'
-            sort_by = "name"
+        if params[:search_term]
+            if params[:type] == 'name'
+                @wands = Wand.all.includes(:wizard).order(:name => 'asc').where("#{ params[:type] } like ?", "%#{ params[:search_term] }%")
+                flash[:message] = "#{ @wands.size } Wands Found."
+                flash[:alert_type] = "success"
+            elsif params[:type] == 'price'
+                @wands = Wand.all.includes(:wizard).order(price: :desc).where("#{ params[:type] } < ?", "#{ params[:search_term] }")
+                flash[:message] = "Found #{ @wands.size } wands under #{ params[:search_term] } Sickles."
+                flash[:alert_type] = "success"
+            end
+            
+            if @wands == []
+                flash[:message] = "No wands found."
+                flash[:alert_type] = "danger"
+                redirect "/wands"
+            end
+        else
+            @wands = Wand.all.includes(:wizard).order(:name => 'asc')
         end
 
-        @wands = Wand.all.includes(:wizard).order(sort_by.to_sym => 'asc')
         @wand = current_wizard.wand
         
         erb :'shop/wands/index'

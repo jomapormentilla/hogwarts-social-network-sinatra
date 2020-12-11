@@ -49,11 +49,11 @@ class ApplicationController < Sinatra::Base
             redirect '/signup'
         end
 
-        if valid_email_regex?(params[:wizard][:email])
-            flash[:message] = "Error: Email Address <b>#{ params[:wizard][:email] }</b> contains invalid characters."
-            flash[:alert_type] = "danger"
-            redirect '/signup'
-        end
+        # if valid_email_regex?(params[:wizard][:email])
+        #     flash[:message] = "Error: Email Address <b>#{ params[:wizard][:email] }</b> contains invalid characters."
+        #     flash[:alert_type] = "danger"
+        #     redirect '/signup'
+        # end
 
         if wizard || wizard_email
             flash[:message] = "Error: Username or Email is already registered."

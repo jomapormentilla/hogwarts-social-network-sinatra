@@ -1,7 +1,17 @@
 class WizardsController < ApplicationController
    
     get '/wizards' do
-        @wizards = Wizard.all.order(:name).includes(:house, :wand, :friends, :added_friends)
+        if params[:search_term]
+            @wizards = Wizard.all.order(:name).includes(:house, :wand, :friends, :added_friends).where("#{ params[:type] } like ?", "%#{ params[:search_term ]}%")
+            if @wizards == []
+                flash[:message] = "No wizards found."
+                flash[:alert_type] = "danger"
+                redirect "/wizards"
+            end
+        else
+            @wizards = Wizard.all.order(:name).includes(:house, :wand, :friends, :added_friends)
+        end
+        
         erb :'wizards/index'
     end
 
