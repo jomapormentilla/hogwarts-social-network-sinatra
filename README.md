@@ -29,17 +29,16 @@ With the server running, open up your favorite web browser and navigate to the f
 ```ruby
 http://localhost:9393
 ```
-Sign up for an account on the Sign Up page, and you're all set to explore the Hogwarts Social Network.
+Sign up for an account on the Sign Up page, and you're all set to explore Hogwarts Social Network.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ## License
-This CLI project is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+This Sinatra project is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
 
-## API & Web References
-http://hp-api.herokuapp.com/api/
+## Check out my blog post
+You can read about my experience developing this application on my [blog post](https://jomapormentilla.medium.com/on-the-shoulders-of-giants-c4548131f159).
 
-https://www.pojo.com/harry-potter-spell-list/
-
-https://pottermore.fandom.com/wiki/Houses
+## Video Walkthrough
+Click [here](https://youtu.be/tz2jQnL7T4I) for a video walkthrough of this application.
