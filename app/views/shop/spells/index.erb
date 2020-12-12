@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-10">
-        <div class="alert alert-dark text-center"><h1>Hogwarts Spells</h1></div>
+        <div class="alert alert-dark text-center"><h1>Hogwarts Spells (<%= @spells.size %>)</h1></div>
         <% if flash.has?(:message) %>
             <div class="alert alert-<%= flash[:alert_type] %> text-center"><%= flash[:message] %></div>
         <% end %>

@@ -68,7 +68,7 @@
     <div class="col-md-3">
         <div class="card bg-light">
             <h4 class="card-header text-center">About the Author</h4>
-            <img src="/images/hogwarts-logo-v2.png" alt="profile" class="card-img-top" />
+            <img src="<%= @post.wizard.img_url == nil ? @post.wizard.house.img_url : @post.wizard.img_url %>" alt="profile" class="card-img-top" />
             <div class="card-body">
                 <table class="table table-sm">
                     <tr>

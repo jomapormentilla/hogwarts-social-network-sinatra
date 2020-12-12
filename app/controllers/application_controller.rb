@@ -86,10 +86,10 @@ class ApplicationController < Sinatra::Base
 
     get '/search' do
         if params[:q]
-            @houses = House.all.where("name like ?", "%#{ params[:q ]}%").includes(:wizards, :founder, :head_master)
-            @wizards = Wizard.all.order(:name).where("name like ? or username like ?", "%#{ params[:q ]}%", "%#{ params[:q ]}%").includes(:friends, :added_friends, :wand, :house)
-            @wands = Wand.all.where("name like ?", "%#{ params[:q ]}%").includes(:wizard)
-            @spells = Spell.all.where("name like ?", "%#{ params[:q ]}%").includes(:wizards)
+            @houses = House.where("name like ?", "%#{ params[:q ]}%").includes(:wizards, :founder, :head_master)
+            @wizards = Wizard.order(:name).where("name like ? or username like ?", "%#{ params[:q ]}%", "%#{ params[:q ]}%").includes(:friends, :added_friends, :wand, :house)
+            @wands = Wand.where("name like ?", "%#{ params[:q ]}%").includes(:wizard)
+            @spells = Spell.where("name like ?", "%#{ params[:q ]}%").includes(:wizards)
 
             @count = @wizards.size + @houses.size + @wands.size + @spells.size
         end

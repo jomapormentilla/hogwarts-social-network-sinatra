@@ -3,6 +3,7 @@ class HousesController < ApplicationController
     get '/houses' do
         @houses = House.all.includes(:wizards, :founder, :head_master)
         @posts = Post.order(timestamp: :desc).limit(20).includes(:wizard, :comments, :upvotes)
+        
         erb :'houses/index'
     end
 
