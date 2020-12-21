@@ -131,7 +131,7 @@ def spell_data
             s = Spell.new
             s.name = tbody.css("td")[0].text
             s.effect = tbody.css("td")[2].text
-            spell.price = rand(50...250)
+            s.price = rand(50...250)
             s.save
         end
     end
