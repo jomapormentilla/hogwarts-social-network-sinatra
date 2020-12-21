@@ -24,7 +24,7 @@ def wizard_data
             username: username.gsub(" ","_"),
             name: name,
             email: "#{ username.gsub(" ",".") }@hogwarts.edu",
-            password: "password",
+            password: "plokijuh",
             balance: 1000,
             house_id: House.all.sample.id
         }
@@ -46,28 +46,28 @@ def founder_data
             username: "thelionking",
             name: "Godric Gryffindor",
             email: "g.gryffindor@hogwarts.edu",
-            password: "password",
+            password: "plokijuh",
             balance: 1000
         },
         {
             username: "thesnakelord",
             name: "Salazar Slytherin",
             email: "s.slytherin@hogwarts.edu",
-            password: "password",
+            password: "plokijuh",
             balance: 1000
         },
         {
             username: "powerpuffgirl",
             name: "Helga Hufflepuff",
             email: "h.hufflepuff@hogwarts.edu",
-            password: "password",
+            password: "plokijuh",
             balance: 1000
         },
         {
             username: "thebirdlady",
             name: "Rowena Ravenclaw",
             email: "r.ravenclaw@hogwarts.edu",
-            password: "password",
+            password: "plokijuh",
             balance: 1000
         }
     ]
@@ -83,28 +83,28 @@ def head_master_data
             username: "missmcgonagall",
             name: "Minerva McGonagall",
             email: "m.mcgonagall@hogwarts.edu",
-            password: "password",
+            password: "plokijuh",
             balance: 1000
         },
         {
             username: "thebadguy",
-            name: "Salazar Snape",
+            name: "Severus Snape",
             email: "s.snape@hogwarts.edu",
-            password: "password",
+            password: "plokijuh",
             balance: 1000
         },
         {
             username: "misspomona",
             name: "Pomona Sprout",
             email: "p.sprout@hogwarts.edu",
-            password: "password",
+            password: "plokijuh",
             balance: 1000
         },
         {
             username: "thebirdman",
             name: "Filius Flitwick",
             email: "f.flitwick@hogwarts.edu",
-            password: "password",
+            password: "plokijuh",
             balance: 1000
         }
     ]
@@ -132,6 +132,7 @@ def spell_data
             s.name = tbody.css("td")[0].text
             s.effect = tbody.css("td")[2].text
             s.price = rand(50...250)
+            s.img_url = "/images/spell-img.png"
             s.save
         end
     end
