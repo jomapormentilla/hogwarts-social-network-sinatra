@@ -4,4 +4,8 @@ class Spell < ActiveRecord::Base
 
     extend Slugifiable::ClassMethods
     include Slugifiable::InstanceMethods
+
+    def self.includes_custom( params )
+        self.includes(:wizards).order(:name => 'asc').where("#{ params[:type] } like ?", "%#{ params[:search_term] }%")
+    end
 end

@@ -1,13 +1,5 @@
 class CommentsController < ApplicationController
     
-    get '/comments' do
-        redirect '/houses'
-    end
-
-    get '/comments/:id' do
-        redirect "/wizards/#{ current_wizard.slug }"
-    end
-
     post '/comments/:id' do
         post = Post.find_by_id(params[:id])
 

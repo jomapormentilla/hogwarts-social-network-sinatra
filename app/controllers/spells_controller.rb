@@ -3,20 +3,20 @@ class SpellsController < ApplicationController
     get '/spells' do
         if params[:search_term]
             if params[:type] == 'name'
-                @spells = Spell.all.includes(:wizards).order(:name => 'asc').where("#{ params[:type] } like ?", "%#{ params[:search_term] }%")
+                @spells = Spell.all.includes_custom( params )
                 flash[:message] = "#{ @spells.size } Spell#{ @spells.size != 1 ? 's' : nil} Found."
-                flash[:alert_type] = "success"
             elsif params[:type] == 'price'
                 @spells = Spell.all.includes(:wizards).order(price: :desc).where("#{ params[:type] } < ?", "#{ params[:search_term] }")
                 flash[:message] = "Found #{ @spells.size } spells under #{ params[:search_term] } Sickles."
-                flash[:alert_type] = "success"
             end
             
-            if @spells == []
+            if @spells.empty?
                 flash[:message] = "No spells found."
                 flash[:alert_type] = "danger"
                 redirect "/spells"
             end
+
+            flash[:alert_type] = "success"
         else
             @spells = Spell.all.includes(:wizards).order(:name => 'asc')
         end
