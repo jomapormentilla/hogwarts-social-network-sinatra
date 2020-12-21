@@ -22,6 +22,13 @@
 
             <label for="wizard[email]">Email</label>
             <input type="text" id="wizard[email]" name="wizard[email]" value="<%= @wizard.email %>" class="form-control" /><br />
+            
+            <label for="wizard[house_id]">House</label>
+            <select name="wizard[house_id]" class="form-control">
+                <% @houses.each do |house| %>
+                    <option value="<%= house.id %>"><%= house.name %></option>
+                <% end %>
+            </select><br />
 
             <button type="submit" class="btn btn-warning btn-sm btn-block">Edit Profile</button>
         </form><br /><br />

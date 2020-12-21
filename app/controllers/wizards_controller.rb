@@ -88,6 +88,7 @@ class WizardsController < ApplicationController
     get '/wizards/:slug/edit' do
         @wizard = Wizard.find_by_slug(params[:slug])
         redirect_if_not_current_wizard( @wizard )
+        @houses = House.all
 
         erb :'/wizards/edit'
     end
@@ -106,7 +107,8 @@ class WizardsController < ApplicationController
         data = {
             username: params[:wizard][:username],
             name: new_name,
-            email: params[:wizard][:email]
+            email: params[:wizard][:email],
+            house_id: params[:wizard][:house_id]
         }
 
         current_wizard.update(data)
